@@ -1,0 +1,9 @@
+Name: Insert %>%
+Description: Inserts pipe at the cursor position
+Binding: insert.pipe
+Interactive: false
+
+Name: Convert slash
+Description: switches teh orientation of slashes
+Binding: flip.slash
+Interactive: false
