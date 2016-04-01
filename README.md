@@ -39,4 +39,4 @@ This functionality is especially useful, when copying paths in Windows.
 
 It will reverse all slashes either __in the selected block(s) of code__,
 or if there is no selection (or only whitespace is selected), it will reverse
-__all slashes in the clipboard__ and __paste it the current cursor(s) position(s)__.
+__all slashes in the clipboard__ and __paste it to the current cursor(s) position(s)__.
