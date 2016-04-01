@@ -19,7 +19,7 @@ It reformats pipe(s) surroundings to achieve following format:
     select(column.1, column.2) %>%
         filter(column.1 > x) %>%
             group_by(column.1) %>%
-                summarise(n=n_distinct(column.2) %>%
+                summarise(n=n_distinct(column.2)) %>%
                     ungroup
 ```
 
