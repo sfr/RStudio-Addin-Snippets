@@ -5,11 +5,11 @@ RStudio add-in to add some code snippets, or help with code editing.
 
 Currently it contains following functions:
 
-* [Insert and reformat '%>%'][]
-* [Reverse slashes][]
+* [Insert and reformat '%>%'](#insert-and-reformat-pipe)
+* [Reverse slashes](#reverse-slashes)
 
 
-## Insert and reformat '%>%'
+## Insert and reformat pipe
 
 This functionality inserts pipes at the current position(s) of the cursor(s) or replaces all selections.
 It reformats pipe(s) surroundings to achieve following format:
