@@ -11,11 +11,12 @@ Currently it contains following functions:
 * [Insert and reformat '%>%'](#insert-and-reformat-pipe)
 * [Reverse slashes](#reverse-slashes)
 
+Insert and reformat pipe
+------------------------
 
-## Insert and reformat pipe
-
-This functionality inserts pipes at the current position(s) of the cursor(s) or replaces all selections.
-It reformats pipe(s) surroundings to achieve following format:
+This functionality inserts pipes at the current position(s) of the cursor(s)
+or replaces all selections. It reformats pipe(s) surroundings to achieve
+following format:
 
 ```{r}
  sub <- data %>%
@@ -28,15 +29,14 @@ It reformats pipe(s) surroundings to achieve following format:
 
 * exactly one space before %>%
 * line cannot start with %>% (unless it is first line of the file).
-    * It will find last non-empty line before the cursor position.
-        * Known issue: fix for '+' ending (or whatever is set up)
+  * It will find last non-empty line before the cursor position.
 * new line after %>%
 * next line will be indented as the current line is + N spaces;
-    * where N is dependent on the RStudio settings
+  * where N is dependent on the RStudio settings
 * then it's followed by the next word, or it is the end of the line.
 
-
-## Reverse slashes
+Reverse slashes
+---------------
 
 This functionality is especially useful, when copying paths in Windows.
 
