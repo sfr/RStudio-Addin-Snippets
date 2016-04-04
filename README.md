@@ -1,7 +1,7 @@
 snippets-addin
 ==============
 
-[![Travis-CI Build Status](https://api.travis-ci.org/sfr/RStudio-Addin-Snippets.png?branch=master)](https://api.travis-ci.org/sfr/RStudio-Addin-Snippets.png?branch=master)
+![Travis-CI Build Status][https://api.travis-ci.org/sfr/RStudio-Addin-Snippets.svg?branch=master]
 
 RStudio add-in to add some code snippets, or help with code editing.
 

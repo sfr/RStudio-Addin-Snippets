@@ -20,18 +20,15 @@ flip.slash <- function()
 
     for (con in context$selection)
     {
-        # does selection contains only whitespace?
-        if (gsub('\\s', '', con$text) != '') {
-            replacement <- flip(con$text)
-        } else {
-            replacement <- ifelse( is.null(fromClipboard) && (getClipboardFormats(numeric=T)[1] == 1L)
-                                 , flip(readClipboard(1))
-                                 , fromClipboard )
-        }
+        # does selection contain only whitespace?
+        replacement <- ifelse( gsub('\\s', '', con$text) != ''
+                             , flip(con$text)
+                             , ifelse( is.null(fromClipboard) && (getClipboardFormats(T)[1] == 1L)
+                                     , flip(readClipboard(1))
+                                     , fromClipboard )
+                             )
 
-        if (!is.na(replacement)) {
-            rstudioapi::modifyRange(con$range, replacement, context$id)
-        }
+        rstudioapi::modifyRange(con$range, replacement, context$id)
     }
 }
 
@@ -42,7 +39,7 @@ flip.slash <- function()
 #' @param text character where slashes orientation will be flipped
 #'
 #' @details If method find forward or backward slash in the \code{text} then
-#'          it will reverse its orientation. IN the case there are no slashes
+#'          it will reverse its orientation. In the case there are no slashes
 #'          in the \code{text}, unmodified \code{text} is returned.
 #'
 #' @return Method returns string with reversed orientation of slashes.

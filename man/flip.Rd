@@ -17,7 +17,7 @@ Method reverse orientation of slashes in the string
 }
 \details{
 If method find forward or backward slash in the \code{text} then
-         it will reverse its orientation. IN the case there are no slashes
+         it will reverse its orientation. In the case there are no slashes
          in the \code{text}, unmodified \code{text} is returned.
 }
 \examples{
