@@ -8,7 +8,7 @@ RStudio add-in to add some code snippets, or help with code editing.
 
 Currently it contains following functions:
 
-* [Insert and reformat '%>%'](#insert-and-reformat-pipe)
+* [Insert and reformat pipe](#insert-and-reformat-pipe)
 * [Reverse slashes](#reverse-slashes)
 
 Insert and reformat pipe
