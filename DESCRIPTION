@@ -3,15 +3,15 @@ Type: Package
 Title: RStudio add-in to add some code snippets, or help with code editing
 Version: 0.1.0
 Authors@R: person( "Juraj", "Sofranko", role = c("aut", "cre")
-                 , email="replace_first_name.replace_last_name@gmail.com")
+                 , email="replace_with_my_first_name.replace_with_my_last_name@gmail.com")
 Description: RStudio add-in to add some code snippets, or help with code
     editing. In the current release it contains pipe insertion and its
     surroundings reformatting and slashes reversing.
-License: GPL-3 | file LICENSE
+License: GPL-2 | file LICENSE
 Imports:
-    rstudioapi (>= 0.5)
+    rstudioapi (>= 0.5-1)
 Suggests:
     testthat
-URL: https://github.com/sfr/snippets-addin
-BugReports: https://github.com/sfr/snippets-addin/issues
+URL: https://github.com/sfr/RStudio-Addin-Snippets
+BugReports: https://github.com/sfr/RStudio-Addin-Snippets/issues
 RoxygenNote: 5.0.1

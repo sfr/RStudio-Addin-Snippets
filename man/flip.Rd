@@ -21,8 +21,8 @@ If method find forward or backward slash in the \code{text} then
          in the \code{text}, unmodified \code{text} is returned.
 }
 \examples{
-flip('/usr\\\\bin/') == flip(flip(flip('/usr\\\\bin/')))
-flip('no change') == 'no change'
-
+\donttest{
+    flip('/usr\\\\bin/') == flip(flip(flip('/usr\\\\bin/')))
+    flip('no change') == 'no change'}
 }
 

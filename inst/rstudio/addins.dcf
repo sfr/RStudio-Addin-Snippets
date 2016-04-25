@@ -4,6 +4,6 @@ Binding: insert.pipe
 Interactive: false
 
 Name: Convert slash
-Description: switches teh orientation of slashes
+Description: switches the orientation of slashes
 Binding: flip.slash
 Interactive: false

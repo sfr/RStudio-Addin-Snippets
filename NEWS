@@ -1,3 +1,8 @@
+Changes in version 0.1.1
+------------------------
+* insert %>% fuctionality updated for rstudioapy 0.5-1
+  * it sets now the proper position of cursor after insert
+
 Changes in version 0.1.0
 ------------------------
 * added insert %>% fuctionality

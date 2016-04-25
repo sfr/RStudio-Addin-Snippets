@@ -4,7 +4,7 @@
 \alias{flip.slash}
 \title{Flips slashes orientation in code selections or from clipboard}
 \usage{
-
+flip.slash()
 }
 \description{
 Method reverse orientation of slashes in the selected code

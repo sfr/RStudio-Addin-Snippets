@@ -3,8 +3,6 @@
 #' @description Method reverse orientation of slashes in the selected code
 #'              or in the clipboard.
 #'
-#' @usage
-#'
 #' @details Method will go through all code selections and reverse orientation
 #'          of all slashes found. In the case there is no content selected or
 #'          only white-space is selected, content of the clipboard will be put
@@ -18,14 +16,17 @@ flip.slash <- function()
     # will hold converted clipboard text, in the case it needs to be used multiple times
     fromClipboard <- NULL
 
-    for (con in context$selection)
+    for (con in rev(context$selection))
     {
         # does selection contain only whitespace?
         replacement <- ifelse( gsub('\\s', '', con$text) != ''
                              , flip(con$text)
                              , ifelse( is.null(fromClipboard) && (getClipboardFormats(T)[1] == 1L)
                                      , flip(readClipboard(1))
-                                     , fromClipboard )
+                                     , ifelse( is.null(fromClipboard)
+                                             , con$text
+                                             , fromClipboard )
+                                     )
                              )
 
         rstudioapi::modifyRange(con$range, replacement, context$id)
@@ -45,11 +46,9 @@ flip.slash <- function()
 #' @return Method returns string with reversed orientation of slashes.
 #'
 #' @examples
-#' flip('/usr\\bin/') == flip(flip(flip('/usr\\bin/')))
-#' flip('no change') == 'no change'
-#'
-#' @export
-#'
+#' \donttest{
+#'     flip('/usr\\bin/') == flip(flip(flip('/usr\\bin/')))
+#'     flip('no change') == 'no change'}
 flip <- function(text = character(0))
 {
     changes <- as.integer(gregexpr('[/\\]', text)[[1]])
