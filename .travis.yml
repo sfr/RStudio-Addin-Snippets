@@ -1,3 +1,1 @@
 language: r
-r_github_packages:
-  rstudio/rstudioapi
