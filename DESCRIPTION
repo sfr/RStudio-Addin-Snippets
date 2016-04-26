@@ -12,6 +12,8 @@ Imports:
     rstudioapi (>= 0.5-1)
 Suggests:
     testthat
+Remotes:
+    rstudio/rstudioapi@291029c2835b
 URL: https://github.com/sfr/RStudio-Addin-Snippets
 BugReports: https://github.com/sfr/RStudio-Addin-Snippets/issues
 RoxygenNote: 5.0.1
