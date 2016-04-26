@@ -1,1 +1,3 @@
 language: r
+install:
+- ./travis-tool.sh install_github rstudio/rstudioapi
