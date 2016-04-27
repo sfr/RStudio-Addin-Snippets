@@ -4,4 +4,5 @@
 ^cran-comments\.md$
 ^NEWS\.md$
 ^\.travis\.yml$
-^\.codeclimate.yml$
+^\.codeclimate\.yml$
+^codecov\.yml$
