@@ -4,6 +4,7 @@ snippets-addin
 [![Travis-CI Build Status](https://api.travis-ci.org/sfr/RStudio-Addin-Snippets.svg?branch=master)](https://api.travis-ci.org/sfr/RStudio-Addin-Snippets.svg?branch=master)
 [![Issue Count](https://codeclimate.com/github/sfr/RStudio-Addin-Snippets/badges/issue_count.svg)](https://codeclimate.com/github/sfr/RStudio-Addin-Snippets)
 [![codecov](https://codecov.io/gh/sfr/RStudio-Addin-Snippets/branch/master/graph/badge.svg)](https://codecov.io/gh/sfr/RStudio-Addin-Snippets)
+[![CRAN version](http://www.r-pkg.org/badges/version/snippetsaddin)](https://cran.r-project.org/package=snippetsaddin)
 
 
 RStudio add-in to add some code snippets, or help with code editing.

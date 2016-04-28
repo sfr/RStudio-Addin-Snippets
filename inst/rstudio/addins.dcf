@@ -7,3 +7,8 @@ Name: Convert slash
 Description: switches the orientation of slashes
 Binding: flip.slash
 Interactive: false
+
+Name: Copy value
+Description: copies value of the object under the cursor into the clipboard
+Binding: copy.data
+Interactive: false

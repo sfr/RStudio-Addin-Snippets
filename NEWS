@@ -1,3 +1,7 @@
+Changes in version 0.2.0
+------------------------
+* fuctionality for copying data to clipboard
+
 Changes in version 0.1.1
 ------------------------
 * insert %>% fuctionality updated for rstudioapy 0.5-1
