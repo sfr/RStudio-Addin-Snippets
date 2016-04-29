@@ -21,74 +21,79 @@ insert.pipe <- function()
 {
     context   <- rstudioapi::getActiveDocumentContext()
     positions <- lapply(context[['selection']], '[[', 'range')
+    indentation <- .rs.readUiPref('num_spaces_for_tab')
 
     if (length(positions) > 0)
     {
         for (i in 1:length(positions))
         {
-            # renew the context
-            context <- rstudioapi::getActiveDocumentContext()
-
-            # get cursor/selection position
-            row.num.start <- positions[[i]]$start[['row'   ]]
-            col.num.start <- positions[[i]]$start[['column']]
-
-            row.num.end   <- positions[[i]]$end[['row'   ]]
-            col.num.end   <- positions[[i]]$end[['column']]
-
-            end.line.len  <- nchar(context$contents[[row.num.end]]) + 1
-
-            # trim all trailing spaces before the cursor position
-            before <- sub('\\s+$', '', substr( context$contents[[row.num.start]]
-                                             , 0
-                                             , col.num.start - 1))
-
-            # in the case of empty line, continue trimming on the previous line.
-            while (before == '' && row.num.start > 1)
-            {
-                row.num.start <- row.num.start - 1
-                before <- sub('\\s+$', '', context$contents[[row.num.start]])
-            }
-
-            # trim the malformed pipe before the cursor
-            before <- sub('\\s*%\\s*>\\s*%$', '', before)
-
-            # trim all leading spaces after cursor position
-            after <- sub('^\\s+', '', substr( context$contents[[row.num.end]]
-                                            , col.num.end
-                                            , end.line.len))
-
-            # how many spaces needs to be added:
-            #     indentation of the current line
-            #         (position of the first non-whitespace character)
-            #     plus default indentation set up in project preferences.
-            reps <- max(0, as.integer(regexpr('\\S+', before)) - 1) + .rs.readUiPref('num_spaces_for_tab')
-
-            # replace with:
-            #     trimmed 'before' string,
-            #     space,
-            #     pipe,
-            #     end of line,
-            #     indentation
-            #     trimmed 'after' string
-            replacement <- paste0(c(before, ' ', '%>%', '\n', rep(' ', reps), after), collapse='')
-
-            # create new selection:
-            #     from the start of the first non-empty line before the cursor
-            #     to the end of the cursor line
-            new.range <- rstudioapi::document_range( rstudioapi::document_position(row.num.start, 0)
-                                                   , rstudioapi::document_position(row.num.end, end.line.len))
+            result <- resolve.selection(context, positions[[i]], indentation)
 
             # replace newly created range
-            rstudioapi::modifyRange(new.range, replacement, context$id)
+            rstudioapi::modifyRange(result$range, result$text, context$id)
 
-            # cursor should be placed at the end of the indentation
-            #end.positions <- update.positions(end.positions, row.num.start, reps, row.num.end)
-
-            positions <- update.positions(positions, i, row.num.start, reps)
+            positions <- update.positions(positions, i, result$range$start[['row']], result$column)
             rstudioapi::setCursorPosition(positions, context$id)
+
+            # renew the context
+            context <- rstudioapi::getActiveDocumentContext()
         }
     }
+}
+
+resolve.selection <- function(context, position, indentation)
+{
+    # get cursor/selection position
+    row.num.start <- position$start[['row'   ]]
+    col.num.start <- position$start[['column']]
+
+    row.num.end   <- position$end[['row'   ]]
+    col.num.end   <- position$end[['column']]
+
+    end.line.len  <- nchar(context$contents[[row.num.end]]) + 1
+
+    # trim all trailing spaces before the cursor position
+    before <- sub('\\s+$', '', substr( context$contents[[row.num.start]]
+                                     , 0
+                                     , col.num.start - 1))
+
+    # in the case of empty line, continue trimming on the previous line.
+    while (before == '' && row.num.start > 1)
+    {
+        row.num.start <- row.num.start - 1
+        before <- sub('\\s+$', '', context$contents[[row.num.start]])
+    }
+
+    # trim the malformed pipe before the cursor
+    before <- sub('\\s*%\\s*>\\s*%$', '', before)
+
+    # trim all leading spaces after cursor position
+    after <- sub('^\\s+', '', substr( context$contents[[row.num.end]]
+                                    , col.num.end
+                                    , end.line.len))
+
+    # how many spaces needs to be added:
+    #     indentation of the current line
+    #         (position of the first non-whitespace character)
+    #     plus default indentation set up in project preferences.
+    reps <- max(0, as.integer(regexpr('\\S+', before)) - 1) + indentation
+
+    # replace with:
+    #     trimmed 'before' string,
+    #     space,
+    #     pipe,
+    #     end of line,
+    #     indentation
+    #     trimmed 'after' string
+    replacement <- paste0(c(before, ' ', '%>%', '\n', rep(' ', reps), after), collapse='')
+
+    # create new selection:
+    #     from the start of the first non-empty line before the cursor
+    #     to the end of the cursor line
+    new.range <- rstudioapi::document_range( rstudioapi::document_position(row.num.start, 0)
+                                           , rstudioapi::document_position(row.num.end, end.line.len))
+
+    return(list(range=new.range, text=replacement, column=reps))
 }
 
 #' @title Update positions
