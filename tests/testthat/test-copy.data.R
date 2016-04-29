@@ -21,6 +21,43 @@ a <- F # not indented on purpose
 # end of the DO NOT CHANGE section !!!
 ################################################################################
 
+test_that('detect.type',
+{
+    expect_identical(detect.type(''  ), list(name='',   type=NULL, value=NULL, supported=F))
+    expect_identical(detect.type(NULL), list(name=NULL, type=NULL, value=NULL, supported=F))
+    expect_identical(detect.type(NA  ), list(name=NA,   type=NULL, value=NULL, supported=F))
+    expect_identical(detect.type(5   ), list(name=5,    type=NULL, value=NULL, supported=F))
+
+    # detect.type look for variable in the global environment
+    name <- 'vec'
+    assign(name, 1:10, envir=.GlobalEnv)
+    actual   <- detect.type(name)
+    expected <- list(name=name, type='atomic', value=get0(name, envir=.GlobalEnv), supported=T)
+    rm(vec, envir=.GlobalEnv)
+    expect_identical(actual, expected)
+
+    assign(name, letters[1:5], envir=.GlobalEnv)
+    actual <- detect.type(name)
+    expected <- list(name=name, type='atomic', value=get0(name, envir=.GlobalEnv), supported=T)
+    rm(vec, envir=.GlobalEnv)
+    expect_identical(actual, expected)
+
+    assign('vec', matrix(1:10, nrow=2), envir=.GlobalEnv)
+    actual <- detect.type(name)
+    expected <- list(name=name, type='matrix', value=get0(name, envir=.GlobalEnv), supported=T)
+    rm(vec, envir=.GlobalEnv)
+    expect_identical(actual, expected)
+})
+
+test_that('get.tsv',
+{
+    expect_identical( get.tsv(list(type='matrix', value=matrix(1:12, nrow=3, byrow=T)))
+                    , '1\t2\t3\t4\n5\t6\t7\t8\n9\t10\t11\t12')
+
+    expect_identical( get.tsv(list(type='atomic', value=1:3))
+                    , '1\t2\t3')
+})
+
 test_that('get.tsv.atomic',
 {
     expect_identical(get.tsv.atomic(), '')
@@ -70,9 +107,20 @@ test_that('get.tsv.matrix',
     expect_identical(get.tsv.matrix(list(value=mat)), 'let\\months\tJan\tFeb\tMar\tApr\na\t1\t2\t3\t4\nb\t5\t6\t7\t8\nc\t9\t10\t11\t12')
 })
 
+test_that('copy.to.clipboard',
+{
+    # skip when clipboard is not supported
+    skip_on_os(c('mac', 'linux', 'solaris'))
+
+    # skip when it's not RStudio or it's of a version that doesn't support addins
+    skip_if_not(rstudioapi::isAvailable(REQUIRED.RSTUDIO.VERSION), 'RStudio is not available!')
+
+
+})
 
 test_that('adjust.selection',
 {
+    # skip when it's not RStudio or it's of a version that doesn't support addins
     skip_if_not(rstudioapi::isAvailable(REQUIRED.RSTUDIO.VERSION), 'RStudio is not available!')
 
     #' @title Generate tests
@@ -195,4 +243,18 @@ test_that('adjust.selection',
             , rstudioapi::document_position(expected$row, expected$start)))
     expect_identical( adjust.selection(), expected
                     , 'multiline selection before the short word')
+})
+
+test_that('is.namelegal',
+{
+    line <- 'abc_012.ABC!@#$%^&*()'
+    for (pos in 1:11)
+    {
+        expect_true(is.namelegal(line, pos))
+    }
+
+    for (pos in 12:nchar(line))
+    {
+        expect_false(is.namelegal(line, pos))
+    }
 })
