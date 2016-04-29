@@ -13,23 +13,15 @@
 copy.data <- function()
 {
     # find the first 'word' that would be a valid variable name
-    decide.what.to.do(adjust.selection())
-}
+    # and then find if such a variable exists and what type it is
+    type <- detect.type(adjust.selection())
 
-decide.what.to.do <- function(selection)
-{
-    type <- detect.type(selection)
-
-    # does such a variable exist?
-    if (!is.null(type[['type']])) {
-
-        # do I know how or is it possible to copy it?
-        if (type[['supported']]) {
-            # all peachy let's go for it
-            copy.to.clipboard(get.tsv(type))
-        } else {
-            message('Nothing was copied to the clipboard. Variable type is not supported.')
-        }
+    if (type[['supported']]) {
+        copy.to.clipboard(get.tsv(type))
+    } else {
+        message(ifelese(is.null(type[['type']])
+                       , 'Nothing was copied to the clipboard - variable does not exist.')
+                       , message('Nothing was copied to the clipboard - variable type is not supported.'))
     }
 }
 

@@ -51,11 +51,13 @@ test_that('detect.type',
 
 test_that('get.tsv',
 {
-    expect_identical( get.tsv(list(type='matrix', value=matrix(1:12, nrow=3, byrow=T)))
-                    , '1\t2\t3\t4\n5\t6\t7\t8\n9\t10\t11\t12')
-
+    # atomic
     expect_identical( get.tsv(list(type='atomic', value=1:3))
                     , '1\t2\t3')
+
+    # matrix
+    expect_identical( get.tsv(list(type='matrix', value=matrix(1:12, nrow=3, byrow=T)))
+                    , '1\t2\t3\t4\n5\t6\t7\t8\n9\t10\t11\t12')
 })
 
 test_that('get.tsv.atomic',
