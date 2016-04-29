@@ -14,7 +14,12 @@ copy.data <- function()
 {
     # find the first 'word' that would be a valid variable name
     # and then find if such a variable exists and what type it is
-    type <- detect.type(adjust.selection())
+    context <- rstudioapi::getActiveDocumentContext()
+    selection <- adjust.selection(context)
+
+    # show what was finally selected
+    rstudioapi::setSelectionRanges(selection$range, context$id)
+    type <- detect.type(selection$text)
 
     if (type[['supported']]) {
         copy.to.clipboard(get.tsv(type))
@@ -180,9 +185,8 @@ copy.to.clipboard <- function(tsv = NULL)
     return(!is.null(tsv) && writeClipboard(tsv, format=1))
 }
 
-adjust.selection <- function()
+adjust.selection <- function(context)
 {
-    context <- rstudioapi::getActiveDocumentContext()
     con <- rstudioapi::primary_selection(context)
 
     # rows
@@ -229,13 +233,11 @@ adjust.selection <- function()
         end <- end + 1
     }
 
-    # show what was finally selected
-    rstudioapi::setSelectionRanges( rstudioapi::document_range( rstudioapi::document_position(row.num.start, start)
-                                                              , rstudioapi::document_position(row.num.start, end + 1))
-                                  , context$id)
-
-    # selected text
-    return(substr(line, start, end))
+    return( list( range = rstudioapi::document_range( rstudioapi::document_position(row.num.start, start)
+                                                    , rstudioapi::document_position(row.num.start, end + 1))
+                , text = substr(line, start, end)
+                )
+          )
 }
 
 #' @title Test validity
