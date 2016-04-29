@@ -1,62 +1,11 @@
 context('inserting pipe')
 
-################################################################################
-# start of the DO NOT CHANGE section !!! - unless you know what you are doing
-# position of the code in this section is referenced in the test methods.
-# changes here might break tests!
+source('common.R')
 
-# dummy method
-.foobar <- function()
-{
-    select <- function()
-    {
-        NULL
-    }
-
-    filter <- function()
-    {
-        NULL
-    }
-
-    # test here
-    a <- select() %   >  %
-
-
-
-
-        filter()
-
-
-    # expected
-    a <- select() %>%
-        filter() %>%
-            as.data.frame()
-
-    a
-}
-# end of the DO NOT CHANGE section !!!
-################################################################################
+load('.foobar.Rdata')
 
 # value is the line number of the line: '# dummy method'
-test.first.line <- 8
-
-test_that('extract.positions', {
-    # skip when it's not RStudio or it's of a version that doesn't support addins
-    skip_if_not(rstudioapi::isAvailable(REQUIRED.RSTUDIO.VERSION), 'RStudio is not available!')
-
-    expected <- list( rstudioapi::document_range(
-                        rstudioapi::document_position(test.first.line + 14, 27)
-                      , rstudioapi::document_position(test.first.line + 19,  9))
-                    , rstudioapi::document_range(
-                        rstudioapi::document_position(test.first.line + 19, 17)
-                      , rstudioapi::document_position(test.first.line + 19, 17))
-                    )
-
-    rstudioapi::setCursorPosition(expected)
-
-    expect_identical(extract.positions(), expected)
-})
-
+test.first.line <- 15
 
 test_that('update.positions', {
     positions <- list( rstudioapi::document_range(
@@ -66,19 +15,18 @@ test_that('update.positions', {
                             rstudioapi::document_position(test.first.line + 19, 17)
                           , rstudioapi::document_position(test.first.line + 19, 17))
                      )
-
     expected <- list( rstudioapi::document_position(test.first.line + 15, 9)
-                     , rstudioapi::document_range(
+                    , rstudioapi::document_range(
                             rstudioapi::document_position(test.first.line + 15, 17)
                           , rstudioapi::document_position(test.first.line + 15, 17))
-                     )
-    positions <- update.positions(positions,1, 22, 8)
+                    )
+    positions <- update.positions(positions, 1, test.first.line + 14, 8)
     expect_identical(positions, expected)
 
 
     expected <- list( rstudioapi::document_position(test.first.line + 15, 9)
                     , rstudioapi::document_position(test.first.line + 16, 13))
-    positions <- update.positions(positions,2, 23, 12)
+    positions <- update.positions(positions, 2, test.first.line + 15, 12)
     expect_identical(positions, expected)
 })
 

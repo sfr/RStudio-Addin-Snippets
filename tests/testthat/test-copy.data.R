@@ -1,25 +1,6 @@
 context('Copy data to clipboard')
 
-################################################################################
-# start of the DO NOT CHANGE section !!! - unless you know what you are doing
-# position of the code in this section is referenced in the test methods.
-# changes here might break tests!
-
-# dummy method
-.foobar <- function( .x_y_z, a )
-{
-a <- F # not indented on purpose
-
-    if (missing(.x_y_z)) {
-        print('Please set a list .x_y_z.')
-    } else {
-        print(.x_y_z$pi)
-    }
-
-    a
-}
-# end of the DO NOT CHANGE section !!!
-################################################################################
+source('common.R')
 
 test_that('detect.type',
 {
@@ -122,123 +103,71 @@ test_that('copy.to.clipboard',
 
 test_that('adjust.selection',
 {
-print(normalizePath('.foobar.Rdata'))
     load('.foobar.Rdata')
-    #load('.\\tests\\testthat\\data\\.foobar.Rdata')
-
-    my.setCursorPosition <- function(context, row, column)
-    {
-        row    <- min(row, length(context$contents))
-        column <- min(column, nchar(context$contents[[row]])+1)
-
-        context[['selection']][[1]] <-
-            list( range=rstudioapi::document_range(
-                            rstudioapi::document_position(row, column)
-                          , rstudioapi::document_position(row, column))
-                , text='')
-
-        invisible(context)
-    }
-
-    my.setSelectionRange <- function(context, row.start, column.start, row.end, column.end)
-    {
-        row.start <- min(row.start, length(context$contents))
-        row.end   <- min(row.end,   length(context$contents))
-
-        column.start <- min(column.start, nchar(context$contents[[row.start]])+1)
-        column.end   <- min(column.end,   nchar(context$contents[[row.end  ]])+1)
-
-        text <- ''
-        if (row.start == row.end) {
-            substr(context$contents[[row.start]], column.start, column.end-1)
-        } else {
-            text <- substr(context$contents[[row.start]], column.start, nchar(context$contents[[row.start]]))
-            rs <- row.start + 1
-            while (rs < row.end)
-            {
-                text <- c(text, context$contents[[rs]])
-                rs <- rs + 1
-            }
-
-            text <- c(text, substr(context$contents[[row.end]], 1, column.end-1))
-            text <- paste(text, collapse='\n')
-        }
-
-        context[['selection']][[1]] <-
-            list( range=rstudioapi::document_range(
-                            rstudioapi::document_position(row.start, column.start)
-                          , rstudioapi::document_position(row.end, column.end))
-                , text=text)
-
-        invisible(context)
-    }
-
-    # skip when it's not RStudio or it's of a version that doesn't support addins
-    #skip_if_not(rstudioapi::isAvailable(REQUIRED.RSTUDIO.VERSION), 'RStudio is not available!')
 
     #' @title Generate tests
     place.in.word <- function(expected, info)
     {
         # first char
-        context <- my.setCursorPosition(top.context, expected$row, expected$start)
+        context <- my.setCursorPosition(top.context, c(row=expected$row, column=expected$start))
         expect_identical( adjust.selection(context)[['text']], expected[['text']]
                         , paste0(info, ': cursor at the first character'))
 
         # last char
-        context <- my.setCursorPosition(top.context, expected$row, expected$end)
+        context <- my.setCursorPosition(top.context, c(row=expected$row, column=expected$end))
         expect_identical( adjust.selection(context)[['text']], expected[['text']]
                         , paste0(info, ': cursor after the last character'))
 
         # in the middle
         if (nchar(expected$text) > 1) {
-            context <- my.setCursorPosition(top.context, expected$row, expected$start + 1)
+            context <- my.setCursorPosition(top.context, c(row=expected$row, column=expected$start + 1))
             expect_identical( adjust.selection(context)[['text']], expected[['text']]
                             , paste0(info, ': cursor in the middle of the word'))
         }
 
         # subselection
         if (nchar(expected$text) > 2) {
-            context <- my.setSelectionRange(top.context, expected$row, expected$start + 1
-                                                       , expected$row, expected$end   - 1)
+            context <- my.setSelectionRange(top.context, c( expected$row, expected$start + 1
+                                                          , expected$row, expected$end   - 1))
             expect_identical( adjust.selection(context)[['text']], expected[['text']]
                             , paste0(info, ': selection inside the word'))
         }
 
         # selection from the start of the word till the end of line
-        context <- my.setSelectionRange(top.context, expected$row, expected$start
-                                                   , expected$row, Inf)
+        context <- my.setSelectionRange(top.context, c( expected$row, expected$start
+                                                      , expected$row, Inf))
         expect_identical( adjust.selection(context)[['text']], expected[['text']]
                         , paste0(info, ': selection from the start of the word till the end of line'))
 
         # selection from the start of the word till the end of file
-        context <- my.setSelectionRange(top.context, expected$row, expected$start
-                                                   , Inf, Inf )
+        context <- my.setSelectionRange(top.context, c( expected$row, expected$start
+                                                      , Inf, Inf ))
         expect_identical( adjust.selection(context)[['text']], expected[['text']]
                         , paste0(info, ': selection from the start of the word till the end of file'))
 
         if (nchar(expected$text) > 1) {
             # selection from middle of the word till the end of line
-            context <- my.setSelectionRange(top.context, expected$row, expected$start + 1
-                                                       , expected$row, Inf)
+            context <- my.setSelectionRange(top.context, c( expected$row, expected$start + 1
+                                                          , expected$row, Inf))
             expect_identical( adjust.selection(context)[['text']], expected[['text']]
                             , paste0(info, ': selection from the middle of the word till the end of line'))
 
             # selection from the middle of the word till the end of file
-            context <- my.setSelectionRange(top.context, expected$row, expected$start + 1
-                                                       , Inf, Inf)
+            context <- my.setSelectionRange(top.context, c( expected$row, expected$start + 1
+                                                          , Inf, Inf))
             expect_identical( adjust.selection(context)[['text']], expected[['text']]
                             , paste0(info, ': selection from the middle of the word till the end of file'))
         }
 
         # selection from the end of the word till the end of line
-        context <- my.setSelectionRange(top.context, expected$row, expected$end
-                                                   , expected$row, Inf)
+        context <- my.setSelectionRange(top.context, c( expected$row, expected$end
+                                                      , expected$row, Inf))
         expect_identical( adjust.selection(context)[['text']], expected[['text']]
                         , paste0(info, ': selection from the end of the word till the end of line'))
 
         # selection from the end of the word till the end of file
-        context <- my.setSelectionRange(top.context, expected$row, expected$end
-                                                   , Inf, Inf)
+        context <- my.setSelectionRange(top.context, c( expected$row, expected$end
+                                                      , Inf, Inf))
         expect_identical( adjust.selection(context)[['text']], expected[['text']]
                         , paste0(info, ': selection from the end of the word till the end of file'))
     }
@@ -267,15 +196,15 @@ print(normalizePath('.foobar.Rdata'))
     # some non-automated examples
     # multiline selection before the short word
     expected <- list(row=test.first.line + 3, start=1, end=2, text='a')
-    context <- my.setSelectionRange(top.context, test.first.line + 1, 32
-                                               , expected$row, expected$start)
+    context <- my.setSelectionRange(top.context, c( test.first.line + 1, 32
+                                                  , expected$row, expected$start))
     expect_identical( adjust.selection(context)[['text']], expected[['text']]
                     , 'multiline selection before the short word')
 
     # multiline selection before the longer word
     expected <- list(row=test.first.line + 5, start=5, end=7, text='if')
-    context <- my.setSelectionRange(top.context, test.first.line + 4, 1
-                                               , expected$row, expected$start)
+    context <- my.setSelectionRange(top.context, c( test.first.line + 4, 1
+                                                  , expected$row, expected$start))
     expect_identical( adjust.selection(context)[['text']], expected[['text']]
                     , 'multiline selection before the short word')
 })

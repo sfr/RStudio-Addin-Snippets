@@ -1,5 +1,7 @@
 context('reversing slashes')
 
+source('common.R')
+
 ################################################################################
 # start of the DO NOT CHANGE section !!! - unless you know what you are doing
 # position of the code in this section is referenced in the test methods.

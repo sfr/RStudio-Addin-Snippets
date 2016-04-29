@@ -19,21 +19,22 @@
 #'
 insert.pipe <- function()
 {
-    positions <- extract.positions()
+    context   <- rstudioapi::getActiveDocumentContext()
+    positions <- lapply(context[['selection']], '[[', 'range')
 
     if (length(positions) > 0)
     {
         for (i in 1:length(positions))
         {
-            # get cursor/selection position
-            row.num.start <- positions[[i]]$start[['row']]
-            col.num.start <- positions[[i]]$start[['column']]
-
-            row.num.end   <- positions[[i]]$end[['row']]
-            col.num.end   <- positions[[i]]$end[['column']]
-
             # renew the context
             context <- rstudioapi::getActiveDocumentContext()
+
+            # get cursor/selection position
+            row.num.start <- positions[[i]]$start[['row'   ]]
+            col.num.start <- positions[[i]]$start[['column']]
+
+            row.num.end   <- positions[[i]]$end[['row'   ]]
+            col.num.end   <- positions[[i]]$end[['column']]
 
             end.line.len  <- nchar(context$contents[[row.num.end]]) + 1
 
@@ -90,28 +91,6 @@ insert.pipe <- function()
     }
 }
 
-#' @title Extract selections
-#' @description Method collects all selection ranges in the active documnent.
-#' @return List of selection ranges.
-extract.positions <- function()
-{
-    positions <- list()
-
-    # loop throu all selections and collect all ranges
-    context <- rstudioapi::getActiveDocumentContext()
-    for (con in context$selection)
-    {
-        positions[[length(positions) + 1]] <-
-            rstudioapi::document_range(
-                rstudioapi::document_position( con$range$start[['row'   ]]
-                                             , con$range$start[['column']] )
-              , rstudioapi::document_position( con$range$end  [['row'   ]]
-                                             , con$range$end  [['column']] ))
-    }
-
-    positions
-}
-
 #' @title Update positions
 #' @description Method update selection positions in the document.
 #'
@@ -139,7 +118,7 @@ update.positions <- function(positions, index, row, column)
 
     # current range is updates and change to position object, as we do have only
     # cursor - not a selection
-    positions[[index]] <- rstudioapi::document_position( row + 1, column + 1)
+    positions[[index]] <- rstudioapi::document_position(row + 1, column + 1)
 
     # loop through the rest of positions
     if (index < length(positions)) {
