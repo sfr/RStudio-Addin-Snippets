@@ -122,8 +122,8 @@ test_that('copy.to.clipboard',
 
 test_that('adjust.selection',
 {
-    load('.\\data\\.foobar.Rdata')
-    #expect_true(file.exists(file.path(system.file('.foobar.Rdata', package=''), "testhaplom.out")))
+print(normalizePath('.foobar.Rdata'))
+    load('.foobar.Rdata')
     #load('.\\tests\\testthat\\data\\.foobar.Rdata')
 
     my.setCursorPosition <- function(context, row, column)

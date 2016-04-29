@@ -24,9 +24,9 @@ copy.data <- function()
     if (type[['supported']]) {
         copy.to.clipboard(get.tsv(type))
     } else {
-        message(ifelese(is.null(type[['type']])
-                       , 'Nothing was copied to the clipboard - variable does not exist.')
-                       , message('Nothing was copied to the clipboard - variable type is not supported.'))
+        message(ifelse( is.null(type[['type']])
+                      , 'Nothing was copied to the clipboard - variable does not exist.'
+                      , 'Nothing was copied to the clipboard - variable type is not supported.'))
     }
 }
 
