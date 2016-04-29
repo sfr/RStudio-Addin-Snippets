@@ -9,11 +9,11 @@ test.first.line <- 15
 
 test_that('resolve.position',
 {
-    context <- my.setSelectionRange(top.context, c(test.first.line + 14, 27, test.first.line + 19,  9))
+    context <- my.setSelectionRange(top.context, c(test.first.line + 15, 1, test.first.line + 19,  9))
     positions <- lapply(context[['selection']], '[[', 'range')
     indentation <- 4
 
-    expect_identical(resolve.selection(context, positions[[1]], indentation)
+    expect_identical( resolve.selection(context, positions[[1]], indentation)
                     , list(range=rstudioapi::document_range(
                                       rstudioapi::document_position(test.first.line + 14,  0)
                                     , rstudioapi::document_position(test.first.line + 19, 17))
