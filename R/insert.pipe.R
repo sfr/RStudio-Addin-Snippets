@@ -7,8 +7,8 @@
 #' @details Method aims to achieve the following format:
 #' \itemize{
 #'   \item exactly one space before \code{\%>\%}
-#'   \item line cannot start with \code{\%>\%} (unless it is first line of the file).
-#'         It will find last non-empty line before the cursor position.
+#'   \item line cannot start with \code{\%>\%} (unless it is first line of the
+#'         file). It will find last non-empty line before the cursor position.
 #'   \item new line after \code{\%>\%}
 #'   \item next line will be indented as the current line is + N spaces;
 #'         where N is dependent on the RStudio settings
@@ -28,11 +28,10 @@ insert.pipe <- function()
         for (i in 1:length(positions))
         {
             result <- resolve.selection(context, positions[[i]], indentation)
+            positions <- update.positions(positions, i, result$range$start[['row']], result$column)
 
             # replace newly created range
             rstudioapi::modifyRange(result$range, result$text, context$id)
-
-            positions <- update.positions(positions, i, result$range$start[['row']], result$column)
             rstudioapi::setCursorPosition(positions, context$id)
 
             # renew the context
@@ -41,6 +40,28 @@ insert.pipe <- function()
     }
 }
 
+#' @title Process selection
+#' @description Method will resolve one selection according to rules specified
+#'              in \code{\link{insert.pipe}}
+#'
+#' @param context     Actual document context
+#' @param position    document_range to resolve
+#' @param indentation value of \code{.rs.readUiPref('num_spaces_for_tab')}
+#'
+#' @return The list of 3 values:
+#'     \describe{
+#'         \item{range}{\code{document_range} which will be replaced by
+#'                      the \code{text}}
+#'         \item{text}{new text to replace the \code{range}}
+#'         \item{column}{new end of the original selection}
+#'     }
+#'
+#' @details The returned \code{column} is not the same as the end of the
+#'          \code{range}, becuse range will end at the edn of the line. The
+#'          \code{column} is important for calculating the expansion or
+#'          shinkage of the original range (\code{position}), in the case there
+#'          are multiple selections in the file. Next selection could even start
+#'          at that very \code{column}.
 resolve.selection <- function(context, position, indentation)
 {
     # get cursor/selection position

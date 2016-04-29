@@ -15,8 +15,8 @@ Method inserts pipes at the current position(s) of the cursor(s)
 Method aims to achieve the following format:
 \itemize{
   \item exactly one space before \code{\%>\%}
-  \item line cannot start with \code{\%>\%} (unless it is first line of the file).
-        It will find last non-empty line before the cursor position.
+  \item line cannot start with \code{\%>\%} (unless it is first line of the
+        file). It will find last non-empty line before the cursor position.
   \item new line after \code{\%>\%}
   \item next line will be indented as the current line is + N spaces;
         where N is dependent on the RStudio settings

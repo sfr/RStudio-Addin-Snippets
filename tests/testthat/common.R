@@ -10,8 +10,12 @@ my.setCursorPosition <- function(context, tuples=list())
     pos <- 1
     for (tuple in tuples)
     {
-        row    <- min(tuple['row'], length(context$contents))
-        column <- min(tuple['column'], nchar(context$contents[[row]])+1)
+        if (is.null(names(tuple))) {
+            names(tuple) <- c('row', 'column')
+        }
+
+        row    <- min(tuple['row'   ], length(context$contents))
+        column <- min(tuple['column'],  nchar(context$contents[[row]])+1)
 
         context[['selection']][[pos]] <-
             list( range=rstudioapi::document_range(
