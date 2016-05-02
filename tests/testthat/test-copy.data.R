@@ -98,7 +98,12 @@ test_that('copy.to.clipboard',
     # skip when it's not RStudio or it's of a version that doesn't support addins
     skip_if_not(rstudioapi::isAvailable(REQUIRED.RSTUDIO.VERSION), 'RStudio is not available!')
 
+    expect_false(copy.to.clipboard(NULL))
 
+    tsv <- '1\t2\t3\t'
+    expect_true(copy.to.clipboard(tsv))
+    expect_identical(getClipboardFormats(T)[1], 1L)
+    expect_identical(readClipboard(1), tsv)
 })
 
 test_that('adjust.selection',
