@@ -6,7 +6,6 @@ snippets-addin
 [![codecov](https://codecov.io/gh/sfr/RStudio-Addin-Snippets/branch/master/graph/badge.svg?ts=1)](https://codecov.io/gh/sfr/RStudio-Addin-Snippets)
 [![CRAN version](http://www.r-pkg.org/badges/version/snippetsaddin?ts=1)](https://cran.r-project.org/package=snippetsaddin)
 
-
 RStudio add-in to add some code snippets, or help with code editing.
 
 Currently it contains following functions:
