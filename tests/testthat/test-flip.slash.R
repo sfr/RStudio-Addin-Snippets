@@ -42,7 +42,7 @@ test_that('flip.slash', {
     raw.clip <- readClipboard(raw=T)
 
     # first line of the testing text
-    test.first.line <- 8
+    test.first.line <- 10
 
     # backup original text
     orig.sel <- rstudioapi::document_range(

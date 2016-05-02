@@ -22,10 +22,8 @@ flip.slash <- function()
         replacement <- ifelse( gsub('\\s', '', con$text) != ''
                              , flip(con$text)
                              , ifelse( is.null(fromClipboard) && (getClipboardFormats(T)[1] == 1L)
-                                     , flip(readClipboard(1))
-                                     , ifelse( is.null(fromClipboard)
-                                             , con$text
-                                             , fromClipboard )
+                                     , fromClipboard <- flip(readClipboard(1))
+                                     , ifelse(is.null(fromClipboard), con$text, fromClipboard)
                                      )
                              )
 
