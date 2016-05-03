@@ -28,7 +28,7 @@ Method generates tsv string for an atomic vector
          Second row will be a \code{\\t} separated list of vector values.
 }
 \seealso{
-Other generate.tsv: \code{\link{get.tsv.matrix}},
-  \code{\link{get.tsv}}
+Other generate.tsv: \code{\link{get.tsv.data.frame}},
+  \code{\link{get.tsv.matrix}}, \code{\link{get.tsv}}
 }
 

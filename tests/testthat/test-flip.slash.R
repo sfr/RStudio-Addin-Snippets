@@ -31,6 +31,39 @@ test_that('flip', {
     expect_identical(flip('\t/a\\b/c\\d/'), '\t\\a/b\\c/d\\')
 })
 
+test_that('find.replacement', {
+
+    expect_identical(find.replacement('/////'),      '\\\\\\\\\\')
+    expect_identical(find.replacement('\\\\\\\\\\'), '/////')
+
+    skip_on_os(c('mac', 'linux', 'solaris'))
+
+    empty.str <- '      '
+
+    # backup content of the clipboard
+    raw.clip <- readClipboard(raw=T)
+
+    # write new value to clipboard
+    writeClipboard('from\\clip', 1)
+
+    actual <- find.replacement(empty.str)
+
+    # restore original content of the clipboard
+    writeClipboard(raw.clip)
+
+    expect_identical(actual, 'from/clip')
+
+    # put something else than text to clipboard
+    # MISSING
+
+    #actual <- find.replacement(empty.str)
+
+    # restore original content of the clipboard
+    #writeClipboard(raw.clip)
+
+    #expect_identical(actual, empty.str)
+})
+
 test_that('flip.slash', {
     # skip when clipboard is not supported
     skip_on_os(c('mac', 'linux', 'solaris'))

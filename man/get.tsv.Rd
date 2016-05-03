@@ -27,6 +27,7 @@ if the \code{type} is \code{supported} then it will generate
 }
 \seealso{
 Other generate.tsv: \code{\link{get.tsv.atomic}},
+  \code{\link{get.tsv.data.frame}},
   \code{\link{get.tsv.matrix}}
 }
 

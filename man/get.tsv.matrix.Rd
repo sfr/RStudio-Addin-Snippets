@@ -4,13 +4,13 @@
 \alias{get.tsv.matrix}
 \title{Generates tsv for matrix}
 \usage{
-get.tsv.matrix(type = list(name = NULL, type = "matrix", value = NULL,
-  supported = T))
+get.tsv.matrix(type = list(name = "", type = "matrix", value = NULL, supported
+  = T))
 }
 \arguments{
 \item{type}{The list of 4 values (as returned by \code{\link{detect.type}}):
 \describe{
-    \item{name}{name of the variable - not used}
+    \item{name}{name of the variable}
     \item{type}{should be \code{matrix} - not checked, not used}
     \item{value}{matrix}
     \item{supported}{should be \code{TRUE} - not checked, not used}
@@ -28,9 +28,11 @@ Method will return N or N+1 rows and M or M+1 tab separated columns.
          If both row and column names exist then top left corner will be
          constructed from dimension names if they exists in the format:
          Row names dimension name, backslash, column names dimension name.
+         In the case there are no dimension names, the \code{name}
+         of the variable will be used for the top left corner cell.
 }
 \seealso{
 Other generate.tsv: \code{\link{get.tsv.atomic}},
-  \code{\link{get.tsv}}
+  \code{\link{get.tsv.data.frame}}, \code{\link{get.tsv}}
 }
 

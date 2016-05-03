@@ -132,7 +132,7 @@ get.tsv.atomic <- function(type = list(name=NULL, type='atomic', value=NULL, sup
 #'
 #' @param type The list of 4 values (as returned by \code{\link{detect.type}}):
 #'     \describe{
-#'         \item{name}{name of the variable - not used}
+#'         \item{name}{name of the variable}
 #'         \item{type}{should be \code{matrix} - not checked, not used}
 #'         \item{value}{matrix}
 #'         \item{supported}{should be \code{TRUE} - not checked, not used}
@@ -143,17 +143,19 @@ get.tsv.atomic <- function(type = list(name=NULL, type='atomic', value=NULL, sup
 #'          If both row and column names exist then top left corner will be
 #'          constructed from dimension names if they exists in the format:
 #'          Row names dimension name, backslash, column names dimension name.
+#'          In the case there are no dimension names, the \code{name}
+#'          of the variable will be used for the top left corner cell.
 #'
 #' @return tsv string
 #'
-get.tsv.matrix <- function(type = list(name=NULL, type='matrix', value=NULL, supported=T))
+get.tsv.matrix <- function(type = list(name='', type='matrix', value=NULL, supported=T))
 {
     if (is.null(type[['value']])) {
         return('')
     }
 
     # new matrix will be created, where first row will contain column names
-    # and first column will contain rownames. Obviously when they exist.
+    # and first column will contain row names. Obviously when they exist.
     new.mat <- type[['value']]
     dimnames(new.mat) <- NULL # not necessary, just to be pedantic
 
@@ -169,15 +171,50 @@ get.tsv.matrix <- function(type = list(name=NULL, type='matrix', value=NULL, sup
 
             if (!is.null(mat.names[[2]])) {
                 # both row and column names exist, so create top left cell too
-                new.mat <- rbind( c( paste(names(mat.names), collapse='\\')
-                                          , mat.names[[2]]
-                                   )
+                top.left <- paste(names(mat.names), collapse='\\')
+                if (top.left == '') {
+                    top.left <- type[['name']]
+                }
+
+                new.mat <- rbind( c(top.left, mat.names[[2]])
                                 , new.mat )
             }
         }
     }
 
     return(paste(apply(new.mat, 1, paste, collapse='\t'), collapse='\n'))
+}
+
+#' @family generate.tsv
+#' @title Generates tsv for data frame
+#' @description Method generates tsv string for a data frame
+#'
+#' @param type The list of 4 values (as returned by \code{\link{detect.type}}):
+#'     \describe{
+#'         \item{name}{name of the variable}
+#'         \item{type}{should be \code{data.frame} - not checked, not used}
+#'         \item{value}{a data frame}
+#'         \item{supported}{should be \code{TRUE} - not checked, not used}
+#'     }
+#'
+#' @details Method will return N or N+1 rows and M or M+1 tab separated columns.
+#'          +1 in both cases is when row names and/or column names exist.
+#'          If both row and column names exist then top left corner cell will
+#'          contain the \code{name} of the variable.
+#'
+#' @return tsv string
+#'
+get.tsv.data.frame <- function(type = list(name='', type='data.frame', value=NULL, supported=T))
+{
+    if (is.null(type[['value']])) {
+        return('')
+    }
+
+    mat.type <- type
+    mat.type[['value']] <- as.matrix(mat.type[['value']])
+    mat.type[['type' ]] <- 'matrix'
+
+    return(get.tsv.matrix(mat.type))
 }
 
 copy.to.clipboard <- function(tsv = NULL)

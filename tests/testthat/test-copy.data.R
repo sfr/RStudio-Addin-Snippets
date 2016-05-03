@@ -63,31 +63,46 @@ test_that('get.tsv.matrix',
     expect_identical(get.tsv.matrix(), '')
 
     mat <- matrix(1:12, nrow=3, byrow=T)
-    expect_identical(get.tsv.matrix(list(value=mat)), '1\t2\t3\t4\n5\t6\t7\t8\n9\t10\t11\t12')
+    expect_identical(get.tsv.matrix(list(name='mat', value=mat)), '1\t2\t3\t4\n5\t6\t7\t8\n9\t10\t11\t12')
 
     dimnames(mat) <- list(letters[1:3])
-    expect_identical(get.tsv.matrix(list(value=mat)), 'a\t1\t2\t3\t4\nb\t5\t6\t7\t8\nc\t9\t10\t11\t12')
+    expect_identical(get.tsv.matrix(list(name='mat', value=mat)), 'a\t1\t2\t3\t4\nb\t5\t6\t7\t8\nc\t9\t10\t11\t12')
 
     dimnames(mat) <- list(let=letters[1:3])
-    expect_identical(get.tsv.matrix(list(value=mat)), 'a\t1\t2\t3\t4\nb\t5\t6\t7\t8\nc\t9\t10\t11\t12')
+    expect_identical(get.tsv.matrix(list(name='mat', value=mat)), 'a\t1\t2\t3\t4\nb\t5\t6\t7\t8\nc\t9\t10\t11\t12')
 
     dimnames(mat) <- list(NULL, month.abb[1:4])
-    expect_identical(get.tsv.matrix(list(value=mat)), 'Jan\tFeb\tMar\tApr\n1\t2\t3\t4\n5\t6\t7\t8\n9\t10\t11\t12')
+    expect_identical(get.tsv.matrix(list(name='mat', value=mat)), 'Jan\tFeb\tMar\tApr\n1\t2\t3\t4\n5\t6\t7\t8\n9\t10\t11\t12')
 
     dimnames(mat) <- list(NULL, months=month.abb[1:4])
-    expect_identical(get.tsv.matrix(list(value=mat)), 'Jan\tFeb\tMar\tApr\n1\t2\t3\t4\n5\t6\t7\t8\n9\t10\t11\t12')
+    expect_identical(get.tsv.matrix(list(name='mat', value=mat)), 'Jan\tFeb\tMar\tApr\n1\t2\t3\t4\n5\t6\t7\t8\n9\t10\t11\t12')
 
     dimnames(mat) <- list(letters[1:3], month.abb[1:4])
-    expect_identical(get.tsv.matrix(list(value=mat)), '\tJan\tFeb\tMar\tApr\na\t1\t2\t3\t4\nb\t5\t6\t7\t8\nc\t9\t10\t11\t12')
+    expect_identical(get.tsv.matrix(list(name='mat', value=mat)), 'mat\tJan\tFeb\tMar\tApr\na\t1\t2\t3\t4\nb\t5\t6\t7\t8\nc\t9\t10\t11\t12')
 
     dimnames(mat) <- list(let=letters[1:3], month.abb[1:4])
-    expect_identical(get.tsv.matrix(list(value=mat)), 'let\\\tJan\tFeb\tMar\tApr\na\t1\t2\t3\t4\nb\t5\t6\t7\t8\nc\t9\t10\t11\t12')
+    expect_identical(get.tsv.matrix(list(name='mat', value=mat)), 'let\\\tJan\tFeb\tMar\tApr\na\t1\t2\t3\t4\nb\t5\t6\t7\t8\nc\t9\t10\t11\t12')
 
     dimnames(mat) <- list(letters[1:3], months=month.abb[1:4])
-    expect_identical(get.tsv.matrix(list(value=mat)), '\\months\tJan\tFeb\tMar\tApr\na\t1\t2\t3\t4\nb\t5\t6\t7\t8\nc\t9\t10\t11\t12')
+    expect_identical(get.tsv.matrix(list(name='mat', value=mat)), '\\months\tJan\tFeb\tMar\tApr\na\t1\t2\t3\t4\nb\t5\t6\t7\t8\nc\t9\t10\t11\t12')
 
     dimnames(mat) <- list(let=letters[1:3], months=month.abb[1:4])
-    expect_identical(get.tsv.matrix(list(value=mat)), 'let\\months\tJan\tFeb\tMar\tApr\na\t1\t2\t3\t4\nb\t5\t6\t7\t8\nc\t9\t10\t11\t12')
+    expect_identical(get.tsv.matrix(list(name='mat', value=mat)), 'let\\months\tJan\tFeb\tMar\tApr\na\t1\t2\t3\t4\nb\t5\t6\t7\t8\nc\t9\t10\t11\t12')
+})
+
+test_that('get.tsv.data.frame',
+{
+    expect_identical(get.tsv.matrix(), '')
+
+    df <- data.frame( a=1:3
+                    , b=letters[10:12]
+                    , c=seq(as.Date('2004-01-01'), by='week', len=3)
+                    , stringsAsFactors=T)
+
+    expect_identical(get.tsv.data.frame(list(name='df', value=df)), 'a\tb\tc\n1\tj\t2004-01-01\n2\tk\t2004-01-08\n3\tl\t2004-01-15')
+
+    row.names(df) <- c('first', 'second', 'third')
+    expect_identical(get.tsv.data.frame(list(name='df', value=df)), 'df\ta\tb\tc\nfirst\t1\tj\t2004-01-01\nsecond\t2\tk\t2004-01-08\nthird\t3\tl\t2004-01-15')
 })
 
 test_that('copy.to.clipboard',

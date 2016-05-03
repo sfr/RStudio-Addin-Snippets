@@ -13,22 +13,32 @@ flip.slash <- function()
 {
     context <-  rstudioapi::getActiveDocumentContext()
 
-    # will hold converted clipboard text, in the case it needs to be used multiple times
-    fromClipboard <- NULL
-
     for (con in rev(context$selection))
     {
-        # does selection contain only whitespace?
-        replacement <- ifelse( gsub('\\s', '', con$text) != ''
-                             , flip(con$text)
-                             , ifelse( is.null(fromClipboard) && (getClipboardFormats(T)[1] == 1L)
-                                     , fromClipboard <- flip(readClipboard(1))
-                                     , ifelse(is.null(fromClipboard), con$text, fromClipboard)
-                                     )
-                             )
-
-        rstudioapi::modifyRange(con$range, replacement, context$id)
+        rstudioapi::modifyRange(con$range, find.replacement(con$text), context$id)
     }
+}
+
+#' @title Find Replacement
+#' @description Method decides what should be the teh selection replaced with.
+#'
+#' @param text Selected text
+#'
+#' @return If text is not empty it will be replaced with the same text with
+#'         flipped orientation of slashes. In the case that text is empty or it
+#'         contains only whitespaces, if clipboard contains some text other than
+#'         whitespaces, then it will be replaces by the text from clipboard with
+#'         flipped orientation of slashes. If clipboard is empty, or there is
+#'         something of unrecognized format text will stay unchanged.
+find.replacement <- function(text)
+{
+    return(ifelse( gsub('\\s', '', text) != ''
+                 , flip(text)
+                 , ifelse( getClipboardFormats(T)[1] == 1L
+                         , flip(readClipboard(1))
+                         , text)
+                 )
+          )
 }
 
 #' @title Flips slashes orientation
