@@ -92,7 +92,7 @@ test_that('get.tsv.matrix',
 
 test_that('get.tsv.data.frame',
 {
-    expect_identical(get.tsv.matrix(), '')
+    expect_identical(get.tsv.data.frame(), '')
 
     df <- data.frame( a=1:3
                     , b=letters[10:12]
