@@ -57,7 +57,8 @@ test_that('get.tsv',
                     , 'a\tb\tc\n1\tj\t2004-01-01\n2\tk\t2004-01-08\n3\tl\t2004-01-15')
 
     # array
-
+    expect_identical(get.tsv(list(type='array', value=array(1:12, dim=c(3, 4), dimnames=list(x=c('a', 'b', 'c'), y=c('k', 'l', 'm', 'm')))))
+                    , 'x\\y\tk\tl\tm\tm\na\t1\t4\t7\t10\nb\t2\t5\t8\t11\nc\t3\t6\t9\t12')
 })
 
 test_that('get.tsv.vector',

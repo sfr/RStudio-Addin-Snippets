@@ -56,14 +56,14 @@ detect.type <- function(variable.name = '')
         && nchar(type[['name']]) > 0
         && !is.null(type[['value']] <- get0(type[['name']], envir=.GlobalEnv))
        ) {
-        if (is.array(type[['value']])) {
-            type[['type'     ]] <- 'array'
-            type[['supported']] <- T
-        } else if (is.data.frame(type[['value']])) {
+        if (is.data.frame(type[['value']])) {
             type[['type'     ]] <- 'data.frame'
             type[['supported']] <- T
         } else if (is.matrix(type[['value']])) {
             type[['type'     ]] <- 'matrix'
+            type[['supported']] <- T
+        } else if (is.array(type[['value']])) {
+            type[['type'     ]] <- 'array'
             type[['supported']] <- T
         } else if (is.vector(type[['value']])) {
             type[['type'     ]] <- 'vector'
@@ -95,7 +95,9 @@ get.tsv <- function(type = list(name=NULL, type=NULL, value=NULL, supported=F))
 {
     tsv <- NULL
 
-    if (type[['type']] == 'data.frame') {
+    if (type[['type']] == 'array') {
+        tsv <- get.tsv.array(type)
+    } else if (type[['type']] == 'data.frame') {
         tsv <- get.tsv.data.frame(type)
     } else if (type[['type']] == 'matrix') {
         tsv <- get.tsv.matrix(type)
