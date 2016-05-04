@@ -56,11 +56,12 @@ paste to MS Excel.
 
 At the moment following data structures are supported:
 
-* [atomic vectors](#atomic-vectors)
+* [vectors](#vectors)
 * [matrices](#matrices)
 * [data frames](#data-frames)
+* [1D and 2D arrays](#arrays)
 
-### Atomic Vectors
+### Vectors
 
 Vectors are represented in a horizontal fashion. If they are named then first
 row will contain names and second values. In they are unnamed then only one row
@@ -122,3 +123,11 @@ mat.4 <- matrix(1:9, nrow=3, dimnames=list(letters[1:3], letters[24:26]))
 ### Data frames
 
 Data frames act as [matrices](#matrices).
+
+### Arrays
+
+1D arrays act as [vectors](#vectors).
+
+2D arrays act as [matrices](#matrices).
+
+3+D arrays - to be implemented.

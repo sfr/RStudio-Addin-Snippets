@@ -56,11 +56,14 @@ detect.type <- function(variable.name = '')
         && nchar(type[['name']]) > 0
         && !is.null(type[['value']] <- get0(type[['name']], envir=.GlobalEnv))
        ) {
-        if (is.matrix(type[['value']])) {
+        if (is.data.frame(type[['value']])) {
+            type[['type'     ]] <- 'data.frame'
+            type[['supported']] <- T
+        } else if (is.matrix(type[['value']])) {
             type[['type'     ]] <- 'matrix'
             type[['supported']] <- T
-        } else if (is.atomic(type[['value']])) {
-            type[['type'     ]] <- 'atomic'
+        } else if (is.vector(type[['value']])) {
+            type[['type'     ]] <- 'vector'
             type[['supported']] <- T
         }
     }
@@ -89,10 +92,12 @@ get.tsv <- function(type = list(name=NULL, type=NULL, value=NULL, supported=F))
 {
     tsv <- NULL
 
-    if (type[['type']] == 'matrix') {
+    if (type[['type']] == 'data.frame') {
+        tsv <- get.tsv.data.frame(type)
+    } else if (type[['type']] == 'matrix') {
         tsv <- get.tsv.matrix(type)
-    } else if (type[['type']] == 'atomic') {
-        tsv <- get.tsv.atomic(type)
+    } else if (type[['type']] == 'vector') {
+        tsv <- get.tsv.vector(type)
     }
 
     return(tsv)
@@ -100,13 +105,13 @@ get.tsv <- function(type = list(name=NULL, type=NULL, value=NULL, supported=F))
 
 #' @family generate.tsv
 #' @title Generate tsv for vector
-#' @description Method generates tsv string for an atomic vector
+#' @description Method generates tsv string for an vector
 #'
 #' @param type The list of 4 values (as returned by \code{\link{detect.type}}):
 #'     \describe{
 #'         \item{name}{name of the variable - not used}
-#'         \item{type}{should be \code{atomic} - not checked, not used}
-#'         \item{value}{an atomic vector}
+#'         \item{type}{should be \code{vector} - not checked, not used}
+#'         \item{value}{a vector}
 #'         \item{supported}{should be \code{TRUE} - not checked, not used}
 #'     }
 #'
@@ -116,7 +121,7 @@ get.tsv <- function(type = list(name=NULL, type=NULL, value=NULL, supported=F))
 #'
 #' @return tsv string
 #'
-get.tsv.atomic <- function(type = list(name=NULL, type='atomic', value=NULL, supported=T))
+get.tsv.vector <- function(type = list(name=NULL, type='vector', value=NULL, supported=T))
 {
     return(ifelse( !is.null(names(type[['value']]))
                  , paste( paste(names(type[['value']]), collapse='\t')
@@ -150,39 +155,40 @@ get.tsv.atomic <- function(type = list(name=NULL, type='atomic', value=NULL, sup
 #'
 get.tsv.matrix <- function(type = list(name='', type='matrix', value=NULL, supported=T))
 {
-    if (is.null(type[['value']])) {
-        return('')
-    }
+    tsv <- ''
+    if (!is.null(type[['value']])) {
+        # new matrix will be created, where first row will contain column names
+        # and first column will contain row names. Obviously when they exist.
+        new.mat <- type[['value']]
+        dimnames(new.mat) <- NULL # not necessary, just to be pedantic
 
-    # new matrix will be created, where first row will contain column names
-    # and first column will contain row names. Obviously when they exist.
-    new.mat <- type[['value']]
-    dimnames(new.mat) <- NULL # not necessary, just to be pedantic
+        mat.names <- dimnames(type[['value']])
 
-    mat.names <- dimnames(type[['value']])
+        if (!is.null(mat.names)) {
+            if (is.null(mat.names[[1]])) {
+                # we already know that there is at least one non-null value in names
+                # and it's not the first one, so we do not have to test for !is.null
+                new.mat <- rbind(mat.names[[2]], new.mat)
+            } else {
+                new.mat <- cbind(mat.names[[1]], new.mat)
 
-    if (!is.null(mat.names)) {
-        if (is.null(mat.names[[1]])) {
-            # we already know that there is at least one non-null value in names
-            # and it's not the first one, so we do not have to test for !is.null
-            new.mat <- rbind(mat.names[[2]], new.mat)
-        } else {
-            new.mat <- cbind(mat.names[[1]], new.mat)
+                if (!is.null(mat.names[[2]])) {
+                    # both row and column names exist, so create top left cell too
+                    top.left <- paste(names(mat.names), collapse='\\')
+                    if (top.left == '') {
+                        top.left <- type[['name']]
+                    }
 
-            if (!is.null(mat.names[[2]])) {
-                # both row and column names exist, so create top left cell too
-                top.left <- paste(names(mat.names), collapse='\\')
-                if (top.left == '') {
-                    top.left <- type[['name']]
+                    new.mat <- rbind( c(top.left, mat.names[[2]])
+                                    , new.mat )
                 }
-
-                new.mat <- rbind( c(top.left, mat.names[[2]])
-                                , new.mat )
             }
         }
+
+        tsv <- paste(apply(new.mat, 1, paste, collapse='\t'), collapse='\n')
     }
 
-    return(paste(apply(new.mat, 1, paste, collapse='\t'), collapse='\n'))
+    return(tsv)
 }
 
 #' @family generate.tsv
@@ -206,16 +212,63 @@ get.tsv.matrix <- function(type = list(name='', type='matrix', value=NULL, suppo
 #'
 get.tsv.data.frame <- function(type = list(name='', type='data.frame', value=NULL, supported=T))
 {
-    if (is.null(type[['value']])) {
-        return('')
+    tsv <- ''
+
+    if (!is.null(type[['value']])) {
+        mat.type <- type
+        mat.type[['value']] <- as.matrix(mat.type[['value']])
+        mat.type[['type' ]] <- 'matrix'
+
+        tsv <- get.tsv(mat.type)
     }
 
-    mat.type <- type
-    mat.type[['value']] <- as.matrix(mat.type[['value']])
-    mat.type[['type' ]] <- 'matrix'
-
-    return(get.tsv.matrix(mat.type))
+    return(tsv)
 }
+
+#' @family generate.tsv
+#' @title Generates tsv for array
+#' @description Method generates tsv string for a data frame
+#'
+#' @param type The list of 4 values (as returned by \code{\link{detect.type}}):
+#'     \describe{
+#'         \item{name}{name of the variable}
+#'         \item{type}{should be \code{array} - not checked, not used}
+#'         \item{value}{an array}
+#'         \item{supported}{should be \code{TRUE} - not checked, not used}
+#'     }
+#'
+#' @details Method will return ...
+#'
+#' @return tsv string
+#'
+get.tsv.array <- function(type = list(name='', type='array', value=NULL, supported=T))
+{
+    tsv <- ''
+
+    if (!is.null(type[['value']])) {
+        dimensions <- length(dim(type[['value']]))
+        if (dimensions == 1) {
+            new.type <- type
+            new.type[['value']] <- setNames(as.vector(type[['value']]), names(type[['value']]))
+            new.type[['type' ]] <- 'vector'
+
+            tsv <- get.tsv(new.type)
+        } else if (dimensions == 2) {
+            new.type <- type
+            new.type[['value']] <- as.matrix(type[['value']])
+            new.type[['type' ]] <- 'matrix'
+
+            tsv <- get.tsv(new.type)
+        } else {
+            tsv <- ''
+        }
+
+        # a.3 <- array(1:24, dim=c(3, 4, 2), dimnames=list(x=c('a', 'b', 'c'), y=c('k', 'l', 'm', 'm'), z=c('x', 'y')))
+    }
+
+    return(tsv)
+}
+
 
 copy.to.clipboard <- function(tsv = NULL)
 {

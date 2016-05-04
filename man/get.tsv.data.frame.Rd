@@ -29,7 +29,8 @@ Method will return N or N+1 rows and M or M+1 tab separated columns.
          contain the \code{name} of the variable.
 }
 \seealso{
-Other generate.tsv: \code{\link{get.tsv.atomic}},
-  \code{\link{get.tsv.matrix}}, \code{\link{get.tsv}}
+Other generate.tsv: \code{\link{get.tsv.array}},
+  \code{\link{get.tsv.matrix}},
+  \code{\link{get.tsv.vector}}, \code{\link{get.tsv}}
 }
 

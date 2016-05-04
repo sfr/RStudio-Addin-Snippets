@@ -26,8 +26,9 @@ if the \code{type} is \code{supported} then it will generate
          appropriate tsv representation of the object.
 }
 \seealso{
-Other generate.tsv: \code{\link{get.tsv.atomic}},
+Other generate.tsv: \code{\link{get.tsv.array}},
   \code{\link{get.tsv.data.frame}},
-  \code{\link{get.tsv.matrix}}
+  \code{\link{get.tsv.matrix}},
+  \code{\link{get.tsv.vector}}
 }
 

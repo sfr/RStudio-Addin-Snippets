@@ -32,7 +32,8 @@ Method will return N or N+1 rows and M or M+1 tab separated columns.
          of the variable will be used for the top left corner cell.
 }
 \seealso{
-Other generate.tsv: \code{\link{get.tsv.atomic}},
-  \code{\link{get.tsv.data.frame}}, \code{\link{get.tsv}}
+Other generate.tsv: \code{\link{get.tsv.array}},
+  \code{\link{get.tsv.data.frame}},
+  \code{\link{get.tsv.vector}}, \code{\link{get.tsv}}
 }
 

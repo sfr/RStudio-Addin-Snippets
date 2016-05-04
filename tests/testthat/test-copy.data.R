@@ -13,13 +13,13 @@ test_that('detect.type',
     name <- 'vec'
     assign(name, 1:10, envir=.GlobalEnv)
     actual   <- detect.type(name)
-    expected <- list(name=name, type='atomic', value=get0(name, envir=.GlobalEnv), supported=T)
+    expected <- list(name=name, type='vector', value=get0(name, envir=.GlobalEnv), supported=T)
     rm(vec, envir=.GlobalEnv)
     expect_identical(actual, expected)
 
     assign(name, letters[1:5], envir=.GlobalEnv)
     actual <- detect.type(name)
-    expected <- list(name=name, type='atomic', value=get0(name, envir=.GlobalEnv), supported=T)
+    expected <- list(name=name, type='vector', value=get0(name, envir=.GlobalEnv), supported=T)
     rm(vec, envir=.GlobalEnv)
     expect_identical(actual, expected)
 
@@ -32,30 +32,37 @@ test_that('detect.type',
 
 test_that('get.tsv',
 {
-    # atomic
-    expect_identical( get.tsv(list(type='atomic', value=1:3))
+    # vector
+    expect_identical( get.tsv(list(type='vector', value=1:3))
                     , '1\t2\t3')
 
     # matrix
     expect_identical( get.tsv(list(type='matrix', value=matrix(1:12, nrow=3, byrow=T)))
                     , '1\t2\t3\t4\n5\t6\t7\t8\n9\t10\t11\t12')
+
+    # data frame
+    expect_identical( get.tsv(list(type='data.frame', value=data.frame(a=1:3, b=letters[10:12], c=seq(as.Date('2004-01-01'), by='week', len=3), stringsAsFactors=T)))
+                    , 'a\tb\tc\n1\tj\t2004-01-01\n2\tk\t2004-01-08\n3\tl\t2004-01-15')
+
+    # array
+
 })
 
-test_that('get.tsv.atomic',
+test_that('get.tsv.vector',
 {
-    expect_identical(get.tsv.atomic(), '')
+    expect_identical(get.tsv.vector(), '')
 
     vec <- 1:3
-    expect_identical(get.tsv.atomic(list(value=vec)), '1\t2\t3')
+    expect_identical(get.tsv.vector(list(value=vec)), '1\t2\t3')
 
     names(vec) <- letters[1:3]
-    expect_identical(get.tsv.atomic(list(value=vec)), 'a\tb\tc\n1\t2\t3')
+    expect_identical(get.tsv.vector(list(value=vec)), 'a\tb\tc\n1\t2\t3')
 
     vec <- c(vec, 4)
-    expect_identical(get.tsv.atomic(list(value=vec)), 'a\tb\tc\t\n1\t2\t3\t4')
+    expect_identical(get.tsv.vector(list(value=vec)), 'a\tb\tc\t\n1\t2\t3\t4')
 
     vec <- c(vec, NA)
-    expect_identical(get.tsv.atomic(list(value=vec)), 'a\tb\tc\t\t\n1\t2\t3\t4\tNA')
+    expect_identical(get.tsv.vector(list(value=vec)), 'a\tb\tc\t\t\n1\t2\t3\t4\tNA')
 })
 
 test_that('get.tsv.matrix',
@@ -104,6 +111,26 @@ test_that('get.tsv.data.frame',
     row.names(df) <- c('first', 'second', 'third')
     expect_identical(get.tsv.data.frame(list(name='df', value=df)), 'df\ta\tb\tc\nfirst\t1\tj\t2004-01-01\nsecond\t2\tk\t2004-01-08\nthird\t3\tl\t2004-01-15')
 })
+
+test_that('get.tsv.array',
+{
+    expect_identical(get.tsv.array(), '')
+
+    arr <- array(1:3)
+    expect_identical(get.tsv.array(list(name='arr', value=arr)), '1\t2\t3')
+
+    dimnames(arr) <- list(x=c('a', 'b', 'c'))
+    expect_identical(get.tsv.array(list(name='arr', value=arr)), 'a\tb\tc\n1\t2\t3')
+
+    arr <- array(1:12, dim=c(3, 4))
+    expect_identical(get.tsv.array(list(name='arr', value=arr)), '1\t4\t7\t10\n2\t5\t8\t11\n3\t6\t9\t12')
+
+    arr <- array(1:12, dim=c(3, 4), dimnames=list(x=c('a', 'b', 'c'), y=c('k', 'l', 'm', 'm')))
+    expect_identical(get.tsv.array(list(name='arr', value=arr)), 'x\\y\tk\tl\tm\tm\na\t1\t4\t7\t10\nb\t2\t5\t8\t11\nc\t3\t6\t9\t12')
+
+    #a.3 <- array(1:24, dim=c(3, 4, 2), dimnames=list(x=c('a', 'b', 'c'), y=c('k', 'l', 'm', 'm'), z=c('x', 'y')))
+})
+
 
 test_that('copy.to.clipboard',
 {
