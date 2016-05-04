@@ -4,9 +4,10 @@ Title: RStudio add-in to add some code snippets, or help with code editing
 Version: 0.2.0
 Authors@R: person( "Juraj", "Sofranko", role = c("aut", "cre")
                  , email="replace_with_my_first_name.replace_with_my_last_name@gmail.com")
-Description: RStudio add-in to add some code snippets, or help with code
-    editing. In the current release it contains pipe insertion and its
-    surroundings reformatting and slashes reversing.
+Description: This package is an add-in to RStudio for Windows. In the current
+    release it contains pipe insertion and its surroundings reformatting;
+    slashes reversing; and copying values of variables under the cursor into
+    clipboard.
 License: GPL-2 | file LICENSE
 Imports:
     rstudioapi (>= 0.5-1)
