@@ -11,12 +11,9 @@
 #'
 flip.slash <- function()
 {
-    context <-  rstudioapi::getActiveDocumentContext()
-
+    context <- rstudioapi::getActiveDocumentContext()
     for (con in rev(context$selection))
-    {
         rstudioapi::modifyRange(con$range, find.replacement(con$text), context$id)
-    }
 }
 
 #' @title Find Replacement
