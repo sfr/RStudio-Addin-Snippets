@@ -219,7 +219,7 @@ get.tsv.data.frame <- function(type = list(name='', type='data.frame', value=NUL
 
 copy.to.clipboard <- function(tsv = NULL)
 {
-    return(!is.null(tsv) && writeClipboard(tsv, format=1))
+    invisible(!is.null(tsv) && writeClipboard(tsv, format=1))
 }
 
 adjust.selection <- function(context)

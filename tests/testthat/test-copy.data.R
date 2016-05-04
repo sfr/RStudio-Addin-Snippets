@@ -107,13 +107,13 @@ test_that('get.tsv.data.frame',
 
 test_that('copy.to.clipboard',
 {
+    expect_false(copy.to.clipboard(NULL))
+
     # skip when clipboard is not supported
     skip_on_os(c('mac', 'linux', 'solaris'))
 
     # skip when it's not RStudio or it's of a version that doesn't support addins
     skip_if_not(rstudioapi::isAvailable(REQUIRED.RSTUDIO.VERSION), 'RStudio is not available!')
-
-    expect_false(copy.to.clipboard(NULL))
 
     tsv <- '1\t2\t3\t'
     expect_true(copy.to.clipboard(tsv))
