@@ -56,7 +56,10 @@ detect.type <- function(variable.name = '')
         && nchar(type[['name']]) > 0
         && !is.null(type[['value']] <- get0(type[['name']], envir=.GlobalEnv))
        ) {
-        if (is.data.frame(type[['value']])) {
+        if (is.array(type[['value']])) {
+            type[['type'     ]] <- 'array'
+            type[['supported']] <- T
+        } else if (is.data.frame(type[['value']])) {
             type[['type'     ]] <- 'data.frame'
             type[['supported']] <- T
         } else if (is.matrix(type[['value']])) {

@@ -28,6 +28,18 @@ test_that('detect.type',
     expected <- list(name=name, type='matrix', value=get0(name, envir=.GlobalEnv), supported=T)
     rm(vec, envir=.GlobalEnv)
     expect_identical(actual, expected)
+
+    assign('vec', data.frame(1:10), envir=.GlobalEnv)
+    actual <- detect.type(name)
+    expected <- list(name=name, type='data.frame', value=get0(name, envir=.GlobalEnv), supported=T)
+    rm(vec, envir=.GlobalEnv)
+    expect_identical(actual, expected)
+
+    assign('vec', array(1:10), envir=.GlobalEnv)
+    actual <- detect.type(name)
+    expected <- list(name=name, type='array', value=get0(name, envir=.GlobalEnv), supported=T)
+    rm(vec, envir=.GlobalEnv)
+    expect_identical(actual, expected)
 })
 
 test_that('get.tsv',
