@@ -131,3 +131,5 @@ Data frames act as [matrices](#matrices).
 2D arrays act as [matrices](#matrices).
 
 3+D arrays - to be implemented.
+
+![](https://reposs.herokuapp.com/?path=sfr/RStudio-Addin-Snippets&style=flat)
