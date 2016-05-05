@@ -132,7 +132,10 @@ Data frames act as [matrices](#matrices).
 
 3+D arrays - to be implemented.
 
-![](https://reposs.herokuapp.com/?path=sfr/RStudio-Addin-Snippets)
+# Collection of badges
+
+![Repository size](https://reposs.herokuapp.com/?path=sfr/RStudio-Addin-Snippets)
 [![Pending Pull-Requests](http://githubbadges.herokuapp.com/sfr/RStudio-Addin-Snippets/pulls.svg)](https://github.com/sfr/RStudio-Addin-Snippets/pulls)
-[![All Releases](https://img.shields.io/github/downloads/sfr/RStudio-Addin-Snippets/total.svg?maxAge=2592000)]()
-[![release](https://img.shields.io/github/release/sfr/RStudio-Addin-Snippets.svg?maxAge=2592000)]()
+[![downloads](https://img.shields.io/github/downloads/sfr/RStudio-Addin-Snippets/total.svg?maxAge=2592000)]()
+[![release version](https://img.shields.io/github/release/sfr/RStudio-Addin-Snippets.svg?maxAge=2592000)](https://github.com/sfr/RStudio-Addin-Snippets/releases)
+[![license](https://img.shields.io/badge/license-GPLv2-green.svg)](https://github.com/sfr/RStudio-Addin-Snippets/blob/master/LICENSE)
