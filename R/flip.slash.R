@@ -31,8 +31,8 @@ find.replacement <- function(text)
 {
     return(ifelse( gsub('\\s', '', text) != ''
                  , flip(text)
-                 , ifelse( getClipboardFormats(T)[1] == 1L
-                         , flip(readClipboard(1))
+                 , ifelse( utils::getClipboardFormats(T)[1] == 1L
+                         , flip(utils::readClipboard(1))
                          , text)
                  )
           )

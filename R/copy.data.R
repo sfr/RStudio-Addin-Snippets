@@ -30,14 +30,14 @@ copy.data <- function()
 #' @title Print error message
 #' @description Method returns appropriate error message.
 #'
-#' @param The list of 4 values:
-#'     \describe{
-#'         \item{name}{name of the variable - not used}
-#'         \item{type}{type of the variable}
-#'         \item{value}{value of the variable - not used}
-#'         \item{supported}{\code{TRUE} if tsv can be generated,
-#'                          \code{FALSE} otherwise - not used}
-#'     }
+#' @param type The list of 4 values:
+#'            \describe{
+#'                \item{name}{name of the variable - not used}
+#'                \item{type}{type of the variable}
+#'                \item{value}{value of the variable - not used}
+#'                \item{supported}{\code{TRUE} if tsv can be generated,
+#'                                 \code{FALSE} otherwise - not used}
+#'            }
 #'
 #' @return error message
 #'
@@ -272,7 +272,7 @@ get.tsv.array <- function(type = list(name='', type='array', value=NULL, support
         dimensions <- length(dim(type[['value']]))
         if (dimensions == 1) {
             new.type <- type
-            new.type[['value']] <- setNames(as.vector(type[['value']]), names(type[['value']]))
+            new.type[['value']] <- stats::setNames(as.vector(type[['value']]), names(type[['value']]))
             new.type[['type' ]] <- 'vector'
 
             tsv <- get.tsv(new.type)
@@ -292,10 +292,9 @@ get.tsv.array <- function(type = list(name='', type='array', value=NULL, support
     return(tsv)
 }
 
-
 copy.to.clipboard <- function(tsv = NULL)
 {
-    invisible(!is.null(tsv) && writeClipboard(tsv, format=1))
+    invisible(!is.null(tsv) && utils::writeClipboard(tsv, format=1))
 }
 
 adjust.selection <- function(context)
