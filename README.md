@@ -132,4 +132,5 @@ Data frames act as [matrices](#matrices).
 
 3+D arrays - to be implemented.
 
-![](https://reposs.herokuapp.com/?path=sfr/RStudio-Addin-Snippets&style=flat)
+![](https://reposs.herokuapp.com/?path=sfr/RStudio-Addin-Snippets)
+[![Pending Pull-Requests](http://githubbadges.herokuapp.com/sfr/RStudio-Addin-Snippets/pulls.svg)](https://github.com/sfr/RStudio-Addin-Snippets/pulls)
