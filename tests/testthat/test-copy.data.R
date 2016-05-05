@@ -141,7 +141,8 @@ test_that('get.tsv.array',
     arr <- array(1:12, dim=c(3, 4), dimnames=list(x=c('a', 'b', 'c'), y=c('k', 'l', 'm', 'm')))
     expect_identical(get.tsv.array(list(name='arr', value=arr)), 'x\\y\tk\tl\tm\tm\na\t1\t4\t7\t10\nb\t2\t5\t8\t11\nc\t3\t6\t9\t12')
 
-    #a.3 <- array(1:24, dim=c(3, 4, 2), dimnames=list(x=c('a', 'b', 'c'), y=c('k', 'l', 'm', 'm'), z=c('x', 'y')))
+    arr <- array(1:24, dim=c(3, 4, 2), dimnames=list(x=c('a', 'b', 'c'), y=c('k', 'l', 'm', 'm'), z=c('x', 'y')))
+    expect_identical(get.tsv.array(list(name='arr', value=arr)), '')
 })
 
 
