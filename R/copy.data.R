@@ -21,13 +21,31 @@ copy.data <- function()
     rstudioapi::setSelectionRanges(selection$range, context$id)
     type <- detect.type(selection$text)
 
-    if (type[['supported']]) {
+    if (type[['supported']])
         copy.to.clipboard(get.tsv(type))
-    } else {
-        message(ifelse( is.null(type[['type']])
-                      , 'Nothing was copied to the clipboard - variable does not exist.'
-                      , 'Nothing was copied to the clipboard - variable type is not supported.'))
-    }
+    else
+        message(get.error.message(type))
+}
+
+#' @title Print error message
+#' @description Method returns appropriate error message.
+#'
+#' @param The list of 4 values:
+#'     \describe{
+#'         \item{name}{name of the variable - not used}
+#'         \item{type}{type of the variable}
+#'         \item{value}{value of the variable - not used}
+#'         \item{supported}{\code{TRUE} if tsv can be generated,
+#'                          \code{FALSE} otherwise - not used}
+#'     }
+#'
+#' @return error message
+#'
+get.error.message <- function(type = list(type=NULL))
+{
+    return(ifelse( is.null(type[['type']])
+                 , 'Nothing was copied to the clipboard - variable does not exist.'
+                 , 'Nothing was copied to the clipboard - variable type is not supported.'))
 }
 
 #' @title Check the type of the variable

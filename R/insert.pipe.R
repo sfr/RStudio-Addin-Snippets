@@ -19,7 +19,7 @@
 #'
 insert.pipe <- function()
 {
-    context   <- rstudioapi::getActiveDocumentContext()
+    context <- rstudioapi::getActiveDocumentContext()
     positions <- lapply(context[['selection']], '[[', 'range')
     indentation <- .rs.readUiPref('num_spaces_for_tab')
 

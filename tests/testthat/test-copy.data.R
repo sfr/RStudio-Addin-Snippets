@@ -161,6 +161,23 @@ test_that('copy.to.clipboard',
     expect_identical(readClipboard(1), tsv)
 })
 
+test_that('get.error.message',
+{
+    expect_identical(get.error.message(list(type=NULL)),     'Nothing was copied to the clipboard - variable does not exist.')
+    expect_identical(get.error.message(list(type='vector')), 'Nothing was copied to the clipboard - variable type is not supported.')
+
+    # skip when clipboard is not supported
+    skip_on_os(c('mac', 'linux', 'solaris'))
+
+    # skip when it's not RStudio or it's of a version that doesn't support addins
+    skip_if_not(rstudioapi::isAvailable(REQUIRED.RSTUDIO.VERSION), 'RStudio is not available!')
+
+    tsv <- '1\t2\t3\t'
+    expect_true(copy.to.clipboard(tsv))
+    expect_identical(getClipboardFormats(T)[1], 1L)
+    expect_identical(readClipboard(1), tsv)
+})
+
 test_that('adjust.selection',
 {
     load('.foobar.Rdata')
