@@ -63,7 +63,7 @@ At the moment following data structures are supported:
 
 ### Vectors
 
-Vectors are represented in a horizontal fashion. If they are named then first
+Vectors are represented in a horizontal fashion. If they are named, then first
 row will contain names and second values. In they are unnamed then only one row
 with values is copied into the clipboard.
 
@@ -74,10 +74,10 @@ _M x (N+1)_ or _(M+1) x (N+1)_ cells, where _M_ and _N_ are matrix
 dimensions. If matrix has specified columns names and/or rows names than they
 will be displayed in the first column and row.
 
-In the case that both columns names and rows names are specified, the content of
-the top left cell will constructed from dimension names, if they exist; in the
+In the case that both columns' names and rows names are specified, the content of
+the top left cell will be constructed from dimension names, if they exist; in the
 following format: Row names dimension name, backslash, column names dimension
-name. Examples below shows all cases. If dimensions are not named then variable
+name. Examples below shows all cases. If dimensions are not named, then variable
 name will be used.
 
 ```{r}
@@ -137,8 +137,8 @@ Data frames act as [matrices](#matrices).
 columns where _N_ is a number of dimensions and _M_ or _M+1_ rows, where _M_ is
 a product of array dimensions. E.g. if array has following dimensions
 ```dim=c(2, 4, 2)```, then the output table will have _N=3+1=4_ columns and
-_M=2*4*2=16_ rows. If array dimensions are named then header row will be added.
-First _N_ columns will be take names from dimensions names and the last column
+_M=2*4*2=16_ rows. If array dimensions are named, then header row will be added.
+First _N_ columns will be take names from dimensions' names and the last column
 will be named after variable. Missing names will stay empty.
 
 See examples below.
