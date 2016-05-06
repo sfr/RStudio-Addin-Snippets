@@ -134,7 +134,7 @@ Data frames act as [matrices](#matrices).
 
 #### 3+D arrays
 3+D arrays will be flatten into a [matrix](#matrices). Matrix will have _N+1_
-columns where $N$ is a number of dimensions and _M_ or _M+1_ rows, where _M_ is
+columns where _N_ is a number of dimensions and _M_ or _M+1_ rows, where _M_ is
 a product of array dimensions. E.g. if array has following dimensions
 ```dim=c(2, 4, 2)```, then the output table will have _N=3+1=4_ columns and
 _M=2*4*2=16_ rows. If array dimensions are named then header row will be added.
@@ -223,7 +223,10 @@ c 15 18 21 24
 ```
 
 In clipboard:
+* the empty top row won't be in the output - markdown doesn't support tables without headers
 
+|   |   |   |    |
+|---|---|---|----|
 | a | k | x |  1 |
 | b | k | x |  2 |
 | c | k | x |  3 |
@@ -274,7 +277,10 @@ Print out:
 ```
 
 In clipboard:
+* the empty top row won't be in the output - markdown doesn't support tables without headers
 
+|   |   |   |    |
+|---|---|---|----|
 | A | A | A |  1 |
 | B | A | A |  2 |
 | C | A | A |  3 |
