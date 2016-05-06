@@ -69,8 +69,8 @@ with values is copied into the clipboard.
 
 ### Matrices
 
-Value copied to clipboard will either have $M\times N$ or $(M+1)\times N$,
-$M\times (N+1)$ or $(M+1)\times (N+1)$ cells, where $M$ and $N$ are matrix
+Value copied to clipboard will either have _M x N_ or _(M+1) x N_,
+_M x (N+1)_ or _(M+1) x (N+1)_ cells, where _M_ and _N_ are matrix
 dimensions. If matrix has specified columns names and/or rows names than they
 will be displayed in the first column and row.
 
@@ -133,12 +133,12 @@ Data frames act as [matrices](#matrices).
 2D arrays act as [matrices](#matrices).
 
 #### 3+D arrays
-3+D arrays will be flatten into a [matrix](#matrices). Matrix will have $N+1$
-columns where $N$ is a number of dimensions and $M$ or $M+1$ rows, where $M$ is
+3+D arrays will be flatten into a [matrix](#matrices). Matrix will have _N+1_
+columns where $N$ is a number of dimensions and _M_ or _M+1_ rows, where _M_ is
 a product of array dimensions. E.g. if array has following dimensions
-```r dim=c(2, 4, 2)```, then the output table will have $N=3+1=4$ columns and
-$M=2*4*2=16$ rows. If array dimensions are named then header row will be added.
-First $N$ columns will be take names from dimensions names and the last column
+```dim=c(2, 4, 2)```, then the output table will have _N=3+1=4_ columns and
+_M=2*4*2=16_ rows. If array dimensions are named then header row will be added.
+First _N_ columns will be take names from dimensions names and the last column
 will be named after variable. Missing names will stay empty.
 
 See examples below.
@@ -170,6 +170,7 @@ x    k  l  m  n
 ```
 
 In clipboard:
+
 | x |   | z | arr.3d |
 |---|---|---|--------|
 | a | k | x |      1 |
@@ -222,6 +223,7 @@ c 15 18 21 24
 ```
 
 In clipboard:
+
 | a | k | x |  1 |
 | b | k | x |  2 |
 | c | k | x |  3 |
@@ -246,7 +248,6 @@ In clipboard:
 | a | n | y | 22 |
 | b | n | y | 23 |
 | c | n | y | 24 |
-
 
 ##### Example 3
 
@@ -273,6 +274,7 @@ Print out:
 ```
 
 In clipboard:
+
 | A | A | A |  1 |
 | B | A | A |  2 |
 | C | A | A |  3 |
