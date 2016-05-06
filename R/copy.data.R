@@ -260,7 +260,20 @@ get.tsv.data.frame <- function(type = list(name='', type='data.frame', value=NUL
 #'         \item{supported}{should be \code{TRUE} - not checked, not used}
 #'     }
 #'
-#' @details Method will return ...
+#' @details 1-dimensional array will be coverted to vector and method
+#'          \code{\link{get.tsv.vector}} will be called.
+#'          2-dimensional array will be coverted to matrix and method
+#'          \code{\link{get.tsv.matrix}} will be called.
+#'          3 and more dimensional array will be flattened to matrix and method
+#'          \code{\link{get.tsv.matrix}} will be called. Matrix will have
+#'          \code{N+1} columns where \code{N} is a number of dimensions and
+#'          \code{M} or \code{M+1} rows, where \code{M} is a product of array
+#'          dimensions. E.g. if array has following dimensions
+#'          \code{dim=c(2, 4, 2)}, then the output table will have
+#'          \code{N=3+1=4} columns and \code{M=2*4*2=16} rows. If array
+#'          dimensions are named then header row will be added. First \code{N}
+#'          columns will be take names from dimensions names and the last column
+#'          will be named after variable. Missing names will stay empty.
 #'
 #' @return tsv string
 #'
@@ -283,15 +296,32 @@ get.tsv.array <- function(type = list(name='', type='array', value=NULL, support
 
             tsv <- get.tsv(new.type)
         } else {
-            tsv <- ''
-        }
+            # flatten dimensions to matrix
+            new.type <- type
+            new.type[['value']] <- as.matrix(as.data.frame(as.table(type[['value']], deparse.level=0)))
+            new.type[['type' ]] <- 'matrix'
 
-        # a.3 <- array(1:24, dim=c(3, 4, 2), dimnames=list(x=c('a', 'b', 'c'), y=c('k', 'l', 'm', 'm'), z=c('x', 'y')))
+            if (is.null(names(dimnames(type[['value']])))) {
+                colnames(new.type[['value']]) <- NULL
+            } else {
+                colnames(new.type[['value']]) <- c(names(dimnames(type[['value']])), new.type[['name']])
+            }
+
+            tsv <- get.tsv(new.type)
+        }
     }
 
     return(tsv)
 }
 
+#' @title Write to Clipboard
+#' @description If there is something to write to clipboard then write it.
+#'
+#' @param tsv The tab septarated values string
+#'
+#' @return Methood invisibly returns \code{TRUE} if \code{tsv} was successfully
+#'         copied to the clipboard, or \code{FALSE} otherwise.
+#'
 copy.to.clipboard <- function(tsv = NULL)
 {
     invisible(!is.null(tsv) && utils::writeClipboard(tsv, format=1))

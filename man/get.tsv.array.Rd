@@ -23,7 +23,20 @@ tsv string
 Method generates tsv string for a data frame
 }
 \details{
-Method will return ...
+1-dimensional array will be coverted to vector and method
+         \code{\link{get.tsv.vector}} will be called.
+         2-dimensional array will be coverted to matrix and method
+         \code{\link{get.tsv.matrix}} will be called.
+         3 and more dimensional array will be flattened to matrix and method
+         \code{\link{get.tsv.matrix}} will be called. Matrix will have
+         \code{N+1} columns where \code{N} is a number of dimensions and
+         \code{M} or \code{M+1} rows, where \code{M} is a product of array
+         dimensions. E.g. if array has following dimensions
+         \code{dim=c(2, 4, 2)}, then the output table will have
+         \code{N=3+1=4} columns and \code{M=2*4*2=16} rows. If array
+         dimensions are named then header row will be added. First \code{N}
+         columns will be take names from dimensions names and the last column
+         will be named after variable. Missing names will stay empty.
 }
 \seealso{
 Other generate.tsv: \code{\link{get.tsv.data.frame}},

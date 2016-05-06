@@ -138,11 +138,20 @@ test_that('get.tsv.array',
     arr <- array(1:12, dim=c(3, 4))
     expect_identical(get.tsv.array(list(name='arr', value=arr)), '1\t4\t7\t10\n2\t5\t8\t11\n3\t6\t9\t12')
 
-    arr <- array(1:12, dim=c(3, 4), dimnames=list(x=c('a', 'b', 'c'), y=c('k', 'l', 'm', 'm')))
-    expect_identical(get.tsv.array(list(name='arr', value=arr)), 'x\\y\tk\tl\tm\tm\na\t1\t4\t7\t10\nb\t2\t5\t8\t11\nc\t3\t6\t9\t12')
+    arr <- array(1:12, dim=c(3, 4), dimnames=list(x=c('a', 'b', 'c'), y=c('k', 'l', 'm', 'n')))
+    expect_identical(get.tsv.array(list(name='arr', value=arr)), 'x\\y\tk\tl\tm\tn\na\t1\t4\t7\t10\nb\t2\t5\t8\t11\nc\t3\t6\t9\t12')
 
-    arr <- array(1:24, dim=c(3, 4, 2), dimnames=list(x=c('a', 'b', 'c'), y=c('k', 'l', 'm', 'm'), z=c('x', 'y')))
-    expect_identical(get.tsv.array(list(name='arr', value=arr)), '')
+    # array with dimension names - one of them is missing
+    arr <- array(1:24, dim=c(3, 4, 2), dimnames=list(x=c('a', 'b', 'c'), c('k', 'l', 'm', 'n'), z=c('x', 'y')))
+    expect_identical(get.tsv.array(list(name='arr', value=arr)), 'x\t\tz\tarr\na\tk\tx\t 1\nb\tk\tx\t 2\nc\tk\tx\t 3\na\tl\tx\t 4\nb\tl\tx\t 5\nc\tl\tx\t 6\na\tm\tx\t 7\nb\tm\tx\t 8\nc\tm\tx\t 9\na\tn\tx\t10\nb\tn\tx\t11\nc\tn\tx\t12\na\tk\ty\t13\nb\tk\ty\t14\nc\tk\ty\t15\na\tl\ty\t16\nb\tl\ty\t17\nc\tl\ty\t18\na\tm\ty\t19\nb\tm\ty\t20\nc\tm\ty\t21\na\tn\ty\t22\nb\tn\ty\t23\nc\tn\ty\t24')
+
+    # array with no dimension names
+    arr <- array(1:24, dim=c(3, 4, 2), dimnames=list(c('a', 'b', 'c'), c('k', 'l', 'm', 'n'), c('x', 'y')))
+    expect_identical(get.tsv.array(list(name='arr', value=arr)), 'a\tk\tx\t 1\nb\tk\tx\t 2\nc\tk\tx\t 3\na\tl\tx\t 4\nb\tl\tx\t 5\nc\tl\tx\t 6\na\tm\tx\t 7\nb\tm\tx\t 8\nc\tm\tx\t 9\na\tn\tx\t10\nb\tn\tx\t11\nc\tn\tx\t12\na\tk\ty\t13\nb\tk\ty\t14\nc\tk\ty\t15\na\tl\ty\t16\nb\tl\ty\t17\nc\tl\ty\t18\na\tm\ty\t19\nb\tm\ty\t20\nc\tm\ty\t21\na\tn\ty\t22\nb\tn\ty\t23\nc\tn\ty\t24')
+
+    # array with no names at all
+    arr <- array(1:24, dim=c(3, 4, 2))
+    expect_identical(get.tsv.array(list(name='arr', value=arr)), 'A\tA\tA\t 1\nB\tA\tA\t 2\nC\tA\tA\t 3\nA\tB\tA\t 4\nB\tB\tA\t 5\nC\tB\tA\t 6\nA\tC\tA\t 7\nB\tC\tA\t 8\nC\tC\tA\t 9\nA\tD\tA\t10\nB\tD\tA\t11\nC\tD\tA\t12\nA\tA\tB\t13\nB\tA\tB\t14\nC\tA\tB\t15\nA\tB\tB\t16\nB\tB\tB\t17\nC\tB\tB\t18\nA\tC\tB\t19\nB\tC\tB\t20\nC\tC\tB\t21\nA\tD\tB\t22\nB\tD\tB\t23\nC\tD\tB\t24')
 })
 
 

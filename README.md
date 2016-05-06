@@ -59,7 +59,7 @@ At the moment following data structures are supported:
 * [vectors](#vectors)
 * [matrices](#matrices)
 * [data frames](#data-frames)
-* [1D and 2D arrays](#arrays)
+* [arrays](#arrays)
 
 ### Vectors
 
@@ -126,11 +126,177 @@ Data frames act as [matrices](#matrices).
 
 ### Arrays
 
+#### 1D arrays
 1D arrays act as [vectors](#vectors).
 
+#### 2D arrays
 2D arrays act as [matrices](#matrices).
 
-3+D arrays - to be implemented.
+#### 3+D arrays
+3+D arrays will be flatten into a [matrix](#matrices). Matrix will have $N+1$
+columns where $N$ is a number of dimensions and $M$ or $M+1$ rows, where $M$ is
+a product of array dimensions. E.g. if array has following dimensions
+```r dim=c(2, 4, 2)```, then the output table will have $N=3+1=4$ columns and
+$M=2*4*2=16$ rows. If array dimensions are named then header row will be added.
+First $N$ columns will be take names from dimensions names and the last column
+will be named after variable. Missing names will stay empty.
+
+See examples below.
+
+##### Example 1
+
+3D array with defined dimension names. One of the dimension names is missing.
+```{r}
+(arr.3d <- array(1:24, dim=c(3, 4, 2), dimnames=list(x=c('a', 'b', 'c'), c('k', 'l', 'm', 'n'), z=c('x', 'y'))))
+```
+
+Print out:
+```
+, , z = x
+
+   
+x   k l m  n
+  a 1 4 7 10
+  b 2 5 8 11
+  c 3 6 9 12
+
+, , z = y
+
+   
+x    k  l  m  n
+  a 13 16 19 22
+  b 14 17 20 23
+  c 15 18 21 24
+```
+
+In clipboard:
+| x |   | z | arr.3d |
+|---|---|---|--------|
+| a | k | x |      1 |
+| b | k | x |      2 |
+| c | k | x |      3 |
+| a | l | x |      4 |
+| b | l | x |      5 |
+| c | l | x |      6 |
+| a | m | x |      7 |
+| b | m | x |      8 |
+| c | m | x |      9 |
+| a | n | x |     10 |
+| b | n | x |     11 |
+| c | n | x |     12 |
+| a | k | y |     13 |
+| b | k | y |     14 |
+| c | k | y |     15 |
+| a | l | y |     16 |
+| b | l | y |     17 |
+| c | l | y |     18 |
+| a | m | y |     19 |
+| b | m | y |     20 |
+| c | m | y |     21 |
+| a | n | y |     22 |
+| b | n | y |     23 |
+| c | n | y |     24 |
+
+##### Example 2
+
+3D array without named dimensions.
+```{r}
+(arr.3d <- array(1:24, dim=c(3, 4, 2), dimnames=list(c('a', 'b', 'c'), c('k', 'l', 'm', 'n'), c('x', 'y'))))
+```
+
+Print out:
+```
+, , x
+
+  k l m  n
+a 1 4 7 10
+b 2 5 8 11
+c 3 6 9 12
+
+, , y
+
+   k  l  m  n
+a 13 16 19 22
+b 14 17 20 23
+c 15 18 21 24
+```
+
+In clipboard:
+| a | k | x |  1 |
+| b | k | x |  2 |
+| c | k | x |  3 |
+| a | l | x |  4 |
+| b | l | x |  5 |
+| c | l | x |  6 |
+| a | m | x |  7 |
+| b | m | x |  8 |
+| c | m | x |  9 |
+| a | n | x | 10 |
+| b | n | x | 11 |
+| c | n | x | 12 |
+| a | k | y | 13 |
+| b | k | y | 14 |
+| c | k | y | 15 |
+| a | l | y | 16 |
+| b | l | y | 17 |
+| c | l | y | 18 |
+| a | m | y | 19 |
+| b | m | y | 20 |
+| c | m | y | 21 |
+| a | n | y | 22 |
+| b | n | y | 23 |
+| c | n | y | 24 |
+
+
+##### Example 3
+
+Bare 3D array.
+```{r}
+(arr.3d <- array(1:24, dim=c(3, 4, 2)))
+```
+
+Print out:
+```
+, , 1
+
+     [,1] [,2] [,3] [,4]
+[1,]    1    4    7   10
+[2,]    2    5    8   11
+[3,]    3    6    9   12
+
+, , 2
+
+     [,1] [,2] [,3] [,4]
+[1,]   13   16   19   22
+[2,]   14   17   20   23
+[3,]   15   18   21   24
+```
+
+In clipboard:
+| A | A | A |  1 |
+| B | A | A |  2 |
+| C | A | A |  3 |
+| A | B | A |  4 |
+| B | B | A |  5 |
+| C | B | A |  6 |
+| A | C | A |  7 |
+| B | C | A |  8 |
+| C | C | A |  9 |
+| A | D | A | 10 |
+| B | D | A | 11 |
+| C | D | A | 12 |
+| A | A | B | 13 |
+| B | A | B | 14 |
+| C | A | B | 15 |
+| A | B | B | 16 |
+| B | B | B | 17 |
+| C | B | B | 18 |
+| A | C | B | 19 |
+| B | C | B | 20 |
+| C | C | B | 21 |
+| A | D | B | 22 |
+| B | D | B | 23 |
+| C | D | B | 24 |
 
 # Collection of badges
 
