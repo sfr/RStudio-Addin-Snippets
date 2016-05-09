@@ -20,7 +20,7 @@ get.tsv.array(type = list(name = "", type = "array", value = NULL, supported =
 tsv string
 }
 \description{
-Method generates tsv string for a data frame
+Method generates tsv string for an array
 }
 \details{
 1-dimensional array will be coverted to vector and method
@@ -41,6 +41,7 @@ Method generates tsv string for a data frame
 \seealso{
 Other generate.tsv: \code{\link{get.tsv.data.frame}},
   \code{\link{get.tsv.matrix}},
+  \code{\link{get.tsv.table}},
   \code{\link{get.tsv.vector}}, \code{\link{get.tsv}}
 }
 

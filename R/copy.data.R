@@ -74,7 +74,10 @@ detect.type <- function(variable.name = '')
         && nchar(type[['name']]) > 0
         && !is.null(type[['value']] <- get0(type[['name']], envir=.GlobalEnv))
        ) {
-        if (is.data.frame(type[['value']])) {
+        if (is.table(type[['value']])) {
+            type[['type'     ]] <- 'table'
+            type[['supported']] <- T
+        } else if (is.data.frame(type[['value']])) {
             type[['type'     ]] <- 'data.frame'
             type[['supported']] <- T
         } else if (is.matrix(type[['value']])) {
@@ -113,7 +116,9 @@ get.tsv <- function(type = list(name=NULL, type=NULL, value=NULL, supported=F))
 {
     tsv <- NULL
 
-    if (type[['type']] == 'array') {
+    if (type[['type']] == 'table') {
+        tsv <- get.tsv.table(type)
+    } else if (type[['type']] == 'array') {
         tsv <- get.tsv.array(type)
     } else if (type[['type']] == 'data.frame') {
         tsv <- get.tsv.data.frame(type)
@@ -250,7 +255,7 @@ get.tsv.data.frame <- function(type = list(name='', type='data.frame', value=NUL
 
 #' @family generate.tsv
 #' @title Generates tsv for array
-#' @description Method generates tsv string for a data frame
+#' @description Method generates tsv string for an array
 #'
 #' @param type The list of 4 values (as returned by \code{\link{detect.type}}):
 #'     \describe{
@@ -299,6 +304,59 @@ get.tsv.array <- function(type = list(name='', type='array', value=NULL, support
             # flatten dimensions to matrix
             new.type <- type
             new.type[['value']] <- as.matrix(as.data.frame(as.table(type[['value']], deparse.level=0)))
+            new.type[['type' ]] <- 'matrix'
+
+            if (is.null(names(dimnames(type[['value']])))) {
+                colnames(new.type[['value']]) <- NULL
+            } else {
+                colnames(new.type[['value']]) <- c(names(dimnames(type[['value']])), new.type[['name']])
+            }
+
+            tsv <- get.tsv(new.type)
+        }
+    }
+
+    return(tsv)
+}
+
+#' @family generate.tsv
+#' @title Generates tsv for table
+#' @description Method generates tsv string for a table
+#'
+#' @param type The list of 4 values (as returned by \code{\link{detect.type}}):
+#'     \describe{
+#'         \item{name}{name of the variable}
+#'         \item{type}{should be \code{table} - not checked, not used}
+#'         \item{value}{an table}
+#'         \item{supported}{should be \code{TRUE} - not checked, not used}
+#'     }
+#'
+#' @details blank
+#'
+#' @return tsv string
+#'
+get.tsv.table <- function(type = list(name='', type='table', value=NULL, supported=T))
+{
+    tsv <- ''
+
+    if (!is.null(type[['value']])) {
+        dimensions <- length(dim(type[['value']]))
+        if (dimensions == 1) {
+            new.type <- type
+            new.type[['value']] <- stats::setNames(as.vector(type[['value']]), names(type[['value']]))
+            new.type[['type' ]] <- 'vector'
+
+            tsv <- get.tsv(new.type)
+        } else if (dimensions == 2) {
+            new.type <- type
+            new.type[['value']] <- as.matrix(type[['value']])
+            new.type[['type' ]] <- 'matrix'
+
+            tsv <- get.tsv(new.type)
+        } else {
+            # flatten dimensions to matrix
+            new.type <- type
+            new.type[['value']] <- as.matrix(as.data.frame(type[['value']]))
             new.type[['type' ]] <- 'matrix'
 
             if (is.null(names(dimnames(type[['value']])))) {

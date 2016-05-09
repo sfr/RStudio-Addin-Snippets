@@ -29,6 +29,6 @@ if the \code{type} is \code{supported} then it will generate
 Other generate.tsv: \code{\link{get.tsv.array}},
   \code{\link{get.tsv.data.frame}},
   \code{\link{get.tsv.matrix}},
-  \code{\link{get.tsv.vector}}
+  \code{\link{get.tsv.table}}, \code{\link{get.tsv.vector}}
 }
 

@@ -40,6 +40,12 @@ test_that('detect.type',
     expected <- list(name=name, type='array', value=get0(name, envir=.GlobalEnv), supported=T)
     rm(vec, envir=.GlobalEnv)
     expect_identical(actual, expected)
+
+    assign('vec', table(rpois(100, 5)), envir=.GlobalEnv)
+    actual <- detect.type(name)
+    expected <- list(name=name, type='table', value=get0(name, envir=.GlobalEnv), supported=T)
+    rm(vec, envir=.GlobalEnv)
+    expect_identical(actual, expected)
 })
 
 test_that('get.tsv',
@@ -59,6 +65,11 @@ test_that('get.tsv',
     # array
     expect_identical(get.tsv(list(type='array', value=array(1:12, dim=c(3, 4), dimnames=list(x=c('a', 'b', 'c'), y=c('k', 'l', 'm', 'm')))))
                     , 'x\\y\tk\tl\tm\tm\na\t1\t4\t7\t10\nb\t2\t5\t8\t11\nc\t3\t6\t9\t12')
+
+    # table
+    set.seed(42)
+    expect_identical(get.tsv(list(type='array', value=table(rpois(100, 5))))
+                    , '0\t1\t2\t3\t4\t5\t6\t7\t8\t9\t10\t11\n3\t4\t5\t14\t14\t15\t20\t8\t6\t6\t4\t1')
 })
 
 test_that('get.tsv.vector',
@@ -154,6 +165,26 @@ test_that('get.tsv.array',
     expect_identical(get.tsv.array(list(name='arr', value=arr)), 'A\tA\tA\t 1\nB\tA\tA\t 2\nC\tA\tA\t 3\nA\tB\tA\t 4\nB\tB\tA\t 5\nC\tB\tA\t 6\nA\tC\tA\t 7\nB\tC\tA\t 8\nC\tC\tA\t 9\nA\tD\tA\t10\nB\tD\tA\t11\nC\tD\tA\t12\nA\tA\tB\t13\nB\tA\tB\t14\nC\tA\tB\t15\nA\tB\tB\t16\nB\tB\tB\t17\nC\tB\tB\t18\nA\tC\tB\t19\nB\tC\tB\t20\nC\tC\tB\t21\nA\tD\tB\t22\nB\tD\tB\t23\nC\tD\tB\t24')
 })
 
+test_that('get.tsv.table',
+{
+    expect_identical(get.tsv.table(), '')
+
+    # 1D table -> to vector
+    set.seed(42)
+    expect_identical(get.tsv.table(list(type='table', value=table(rpois(100, 5))))
+                    , '0\t1\t2\t3\t4\t5\t6\t7\t8\t9\t10\t11\n3\t4\t5\t14\t14\t15\t20\t8\t6\t6\t4\t1')
+
+    # 2D table -> to matrix
+    tab <- table(state.division, state.region)
+    expect_identical( get.tsv.table(list(type='table', value=tab))
+                    , 'state.division\\state.region\tNortheast\tSouth\tNorth Central\tWest\nNew England\t6\t0\t0\t0\nMiddle Atlantic\t3\t0\t0\t0\nSouth Atlantic\t0\t8\t0\t0\nEast South Central\t0\t4\t0\t0\nWest South Central\t0\t4\t0\t0\nEast North Central\t0\t0\t5\t0\nWest North Central\t0\t0\t7\t0\nMountain\t0\t0\t0\t8\nPacific\t0\t0\t0\t5')
+
+    # 3D table -> to matrix
+    tab <- table(datasets::airquality$Month[1:5], datasets::airquality$Day[1:5], datasets::airquality$Temp[1:5])
+    expect_identical( get.tsv.table(list(name='tab', type='table', value=tab))
+                    , '\t\t\ttab\n5\t1\t56\t0\n5\t2\t56\t0\n5\t3\t56\t0\n5\t4\t56\t0\n5\t5\t56\t1\n5\t1\t62\t0\n5\t2\t62\t0\n5\t3\t62\t0\n5\t4\t62\t1\n5\t5\t62\t0\n5\t1\t67\t1\n5\t2\t67\t0\n5\t3\t67\t0\n5\t4\t67\t0\n5\t5\t67\t0\n5\t1\t72\t0\n5\t2\t72\t1\n5\t3\t72\t0\n5\t4\t72\t0\n5\t5\t72\t0\n5\t1\t74\t0\n5\t2\t74\t0\n5\t3\t74\t1\n5\t4\t74\t0\n5\t5\t74\t0')
+
+})
 
 test_that('copy.to.clipboard',
 {
