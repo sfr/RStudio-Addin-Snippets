@@ -12,7 +12,7 @@ Currently it contains following functions:
 
 * [Insert and reformat pipe](#insert-and-reformat-pipe)
 * [Reverse slashes](#reverse-slashes)
-* [Copy data to Clipboard](#copy-data-to-clipboard)
+* [Copy data to Clipboard (vectors, tables, arrays, matrices, data frames)](#copy-data-to-clipboard)
 
 ## Insert and reformat pipe
 
@@ -60,6 +60,7 @@ At the moment following data structures are supported:
 * [matrices](#matrices)
 * [data frames](#data-frames)
 * [arrays](#arrays)
+* [tables](#tables)
 
 ### Vectors
 
@@ -305,6 +306,17 @@ In clipboard:
 | A | D | B | 22 |
 | B | D | B | 23 |
 | C | D | B | 24 |
+
+### Tables
+
+#### "1D" tables
+"1D" tables act as [vectors](#vectors).
+
+#### "2D" tables
+"2D" tables act as [matrices](#matrices).
+
+#### "3+D" tables
+"3+D" tables act as [3+D arrays](#3+D arrays).
 
 # Collection of badges
 
