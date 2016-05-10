@@ -359,9 +359,7 @@ get.tsv.table <- function(type = list(name='', type='table', value=NULL, support
             new.type[['value']] <- as.matrix(as.data.frame(type[['value']]))
             new.type[['type' ]] <- 'matrix'
 
-            # TODO: It looks like this cannot be NULL. I will need
-            # to investigate more and maybe remove the condition completely.
-            if (is.null(names(dimnames(type[['value']])))) {
+            if (paste0(names(dimnames(type[['value']])), collapse='') == '') {
                 colnames(new.type[['value']]) <- NULL
             } else {
                 colnames(new.type[['value']]) <- c(names(dimnames(type[['value']])), new.type[['name']])
