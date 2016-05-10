@@ -68,7 +68,7 @@ test_that('get.tsv',
 
     # table
     set.seed(42)
-    expect_identical(get.tsv(list(type='array', value=table(rpois(100, 5))))
+    expect_identical(get.tsv(list(type='table', value=table(rpois(100, 5))))
                     , '0\t1\t2\t3\t4\t5\t6\t7\t8\t9\t10\t11\n3\t4\t5\t14\t14\t15\t20\t8\t6\t6\t4\t1')
 })
 
@@ -184,6 +184,10 @@ test_that('get.tsv.table',
     expect_identical( get.tsv.table(list(name='tab', type='table', value=tab))
                     , '\t\t\ttab\n5\t1\t56\t0\n5\t2\t56\t0\n5\t3\t56\t0\n5\t4\t56\t0\n5\t5\t56\t1\n5\t1\t62\t0\n5\t2\t62\t0\n5\t3\t62\t0\n5\t4\t62\t1\n5\t5\t62\t0\n5\t1\t67\t1\n5\t2\t67\t0\n5\t3\t67\t0\n5\t4\t67\t0\n5\t5\t67\t0\n5\t1\t72\t0\n5\t2\t72\t1\n5\t3\t72\t0\n5\t4\t72\t0\n5\t5\t72\t0\n5\t1\t74\t0\n5\t2\t74\t0\n5\t3\t74\t1\n5\t4\t74\t0\n5\t5\t74\t0')
 
+    tab <- table(datasets::airquality$Month[1:5], datasets::airquality$Day[1:5], datasets::airquality$Temp[1:5])
+    names(dimnames(tab)) <- c('m', 'd', 't')
+    expect_identical( get.tsv.table(list(name='tab', type='table', value=tab))
+                    , 'm\td\tt\ttab\n5\t1\t56\t0\n5\t2\t56\t0\n5\t3\t56\t0\n5\t4\t56\t0\n5\t5\t56\t1\n5\t1\t62\t0\n5\t2\t62\t0\n5\t3\t62\t0\n5\t4\t62\t1\n5\t5\t62\t0\n5\t1\t67\t1\n5\t2\t67\t0\n5\t3\t67\t0\n5\t4\t67\t0\n5\t5\t67\t0\n5\t1\t72\t0\n5\t2\t72\t1\n5\t3\t72\t0\n5\t4\t72\t0\n5\t5\t72\t0\n5\t1\t74\t0\n5\t2\t74\t0\n5\t3\t74\t1\n5\t4\t74\t0\n5\t5\t74\t0')
 })
 
 test_that('copy.to.clipboard',
