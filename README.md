@@ -45,14 +45,18 @@ It will reverse all slashes either __in the selected block(s) of code__,
 or if there is no selection (or only whitespace is selected), it will reverse
 __all slashes in the clipboard__ and __paste it to the current cursor(s) position(s)__.
 
-
 ## Copy data to clipboard
 
 At the moment this is Windows only function.
 
-Function will copy the content of the variable under the cursor into
+Function will copy the content of the variable 'under the cursor' into
 the clipboard. It will be represented as a __tab separated value__ for an easy
 paste to MS Excel.
+
+There is no need to precisely selelct the name of the variable. Cursior can be placed anywhere in the name,
+or variable name needs to be first valid name in the code selection. Add-in will adjust the selection.
+In the case that it is not possible to generate tsv, message will be written to the console. Otherwise tsv
+will be 'silently' copied to clipboard without any messages.
 
 At the moment following data structures are supported:
 
