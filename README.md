@@ -316,7 +316,7 @@ In clipboard:
 "2D" tables act as [matrices](#matrices).
 
 #### "3+D" tables
-"3+D" tables act as [3+D arrays](#3+D arrays).
+"3+D" tables act as [3+D arrays](#3d-arrays).
 
 # Collection of badges
 
