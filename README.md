@@ -53,10 +53,11 @@ Function will copy the content of the variable 'under the cursor' into
 the clipboard. It will be represented as a __tab separated value__ for an easy
 paste to MS Excel.
 
-There is no need to precisely select the name of the variable. Cursor can be placed anywhere in the name,
-or variable name needs to be first valid name in the code selection. Add-in will adjust the selection.
-In the case that it is not possible to generate tsv, message will be written to the console. Otherwise tsv
-will be 'silently' copied to clipboard without any messages.
+There is no need to precisely select the name of the variable. Cursor can be
+placed anywhere in the name, or variable name needs to be first valid name
+in the code selection. Add-in will adjust the selection. In the case that it is
+not possible to generate tsv, message will be written to the console. Otherwise
+tsv will be 'silently' copied to clipboard without any messages.
 
 At the moment following data structures are supported:
 
@@ -79,14 +80,19 @@ _M x (N+1)_ or _(M+1) x (N+1)_ cells, where _M_ and _N_ are matrix
 dimensions. If matrix has specified columns names and/or rows names than they
 will be displayed in the first column and/or row.
 
-In the case that both columns' names and rows' names are specified, the content of
-the top left cell will be constructed from dimensions' names, if they exist; in the
-following format: Rows names dimension name, backslash, columns names dimension
-name. Examples below shows all cases. If dimensions are not named, then variable
-name will be used.
+In the case that both columns' names and rows' names are specified, the content
+of the top left cell will be constructed from dimensions' names, if they exist;
+in the following format: Rows names dimension name, backslash, columns names
+dimension name. Examples below shows all cases. If dimensions are not named,
+then variable name will be used.
 
 ```{r}
-mat.1 <- matrix(1:9, nrow=3, dimnames=list(rows=letters[1:3], columns=letters[24:26]))
+mat.1 <- matrix( 1:9
+               , nrow=3
+               , dimnames=list( rows=letters[1:3]
+                              , columns=letters[24:26]
+                              )
+               )
 ```
 
 | rows\\columns | x | y | z |
@@ -96,7 +102,12 @@ mat.1 <- matrix(1:9, nrow=3, dimnames=list(rows=letters[1:3], columns=letters[24
 | c             | 3 | 6 | 9 |
 
 ```{r}
-mat.2 <- matrix(1:9, nrow=3, dimnames=list(letters[1:3], columns=letters[24:26]))
+mat.2 <- matrix( 1:9
+               , nrow=3
+               , dimnames=list(         letters[1:3]
+                              , columns=letters[24:26]
+                              )
+               )
 ```
 
 | \\columns | x | y | z |
@@ -106,7 +117,12 @@ mat.2 <- matrix(1:9, nrow=3, dimnames=list(letters[1:3], columns=letters[24:26])
 | c         | 3 | 6 | 9 |
 
 ```{r}
-mat.3 <- matrix(1:9, nrow=3, dimnames=list(rows=letters[1:3], letters[24:26]))
+mat.3 <- matrix( 1:9
+               , nrow=3
+               , dimnames=list( rows=letters[1:3]
+                              ,      letters[24:26]
+                              )
+               )
 ```
 
 | rows\\ | x | y | z |
@@ -116,7 +132,12 @@ mat.3 <- matrix(1:9, nrow=3, dimnames=list(rows=letters[1:3], letters[24:26]))
 | c      | 3 | 6 | 9 |
 
 ```{r}
-mat.4 <- matrix(1:9, nrow=3, dimnames=list(letters[1:3], letters[24:26]))
+mat.4 <- matrix( 1:9
+               , nrow=3
+               , dimnames=list( letters[1:3]
+                              , letters[24:26]
+                              )
+               )
 ```
 
 | mat.4 | x | y | z |
@@ -132,12 +153,15 @@ Data frames act as [matrices](#matrices).
 ### Arrays
 
 #### 1D arrays
+
 1D arrays act as [vectors](#vectors).
 
 #### 2D arrays
+
 2D arrays act as [matrices](#matrices).
 
 #### 3+D arrays
+
 3+D arrays will be flatten into a [matrix](#matrices). Matrix will have _N+1_
 columns where _N_ is a number of dimensions and _M_ or _M+1_ rows, where _M_ is
 a product of array dimensions. E.g. if array has following dimensions
@@ -151,14 +175,22 @@ See examples below.
 ##### Example 1
 
 3D array with defined dimension names. One of the dimension names is missing.
+
 ```{r}
-(arr.3d <- array(1:24, dim=c(3, 4, 2), dimnames=list(x=c('a', 'b', 'c'), c('k', 'l', 'm', 'n'), z=c('x', 'y'))))
+(arr.3d <- array( 1:24
+                , dim=c(3, 4, 2)
+                , dimnames=list( x=c('a', 'b', 'c')
+                               ,   c('k', 'l', 'm', 'n')
+                               , z=c('x', 'y')
+                               )
+                )
+)
 ```
 
 Print out:
+
 ```
 , , z = x
-
 
 x   k l m  n
   a 1 4 7 10
@@ -166,7 +198,6 @@ x   k l m  n
   c 3 6 9 12
 
 , , z = y
-
 
 x    k  l  m  n
   a 13 16 19 22
@@ -206,8 +237,16 @@ In clipboard:
 ##### Example 2
 
 3D array without named dimensions.
+
 ```{r}
-(arr.3d <- array(1:24, dim=c(3, 4, 2), dimnames=list(c('a', 'b', 'c'), c('k', 'l', 'm', 'n'), c('x', 'y'))))
+(arr.3d <- array( 1:24
+                , dim=c(3, 4, 2)
+                , dimnames=list( c('a', 'b', 'c')
+                               , c('k', 'l', 'm', 'n')
+                               , c('x', 'y')
+                               )
+                )
+)
 ```
 
 Print out:
@@ -228,7 +267,8 @@ c 15 18 21 24
 ```
 
 In clipboard:
-* the empty top row won't be in the output - markdown doesn't support tables without headers
+* the empty top row won't be in the output - markdown doesn't support tables
+without headers
 
 |   |   |   |    |
 |---|---|---|----|
@@ -260,11 +300,13 @@ In clipboard:
 ##### Example 3
 
 Bare 3D array.
+
 ```{r}
 (arr.3d <- array(1:24, dim=c(3, 4, 2)))
 ```
 
 Print out:
+
 ```
 , , 1
 
@@ -282,7 +324,8 @@ Print out:
 ```
 
 In clipboard:
-* the empty top row won't be in the output - markdown doesn't support tables without headers
+* the empty top row won't be in the output - markdown doesn't support tables
+without headers
 
 |   |   |   |    |
 |---|---|---|----|
@@ -314,12 +357,15 @@ In clipboard:
 ### Tables
 
 #### "1D" tables
+
 "1D" tables act as [vectors](#vectors).
 
 #### "2D" tables
+
 "2D" tables act as [matrices](#matrices).
 
 #### "3+D" tables
+
 "3+D" tables act as [3+D arrays](#3d-arrays).
 
 # Collection of badges
