@@ -270,7 +270,7 @@ c 15 18 21 24
 In clipboard:
 
 * the empty top row won't be in the output - markdown doesn't support tables
-without headers
+  without headers
 
 |   |   |   |    |
 |---|---|---|----|
@@ -328,7 +328,7 @@ Print out:
 In clipboard:
 
 * the empty top row won't be in the output - markdown doesn't support tables
-without headers
+  without headers
 
 |   |   |   |    |
 |---|---|---|----|
