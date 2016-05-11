@@ -69,7 +69,7 @@ At the moment following data structures are supported:
 ### Vectors
 
 Vectors are represented in a horizontal fashion. If they are named, then first
-row will contain names and second values. In they are unnamed then only one row
+row will contain names and second values. If they are unnamed then only one row
 with values is copied into the clipboard.
 
 ### Matrices
@@ -77,11 +77,11 @@ with values is copied into the clipboard.
 Value copied to clipboard will either have _M x N_ or _(M+1) x N_,
 _M x (N+1)_ or _(M+1) x (N+1)_ cells, where _M_ and _N_ are matrix
 dimensions. If matrix has specified columns names and/or rows names than they
-will be displayed in the first column and row.
+will be displayed in the first column and/or row.
 
-In the case that both columns' names and rows names are specified, the content of
-the top left cell will be constructed from dimension names, if they exist; in the
-following format: Row names dimension name, backslash, column names dimension
+In the case that both columns' names and rows' names are specified, the content of
+the top left cell will be constructed from dimensions' names, if they exist; in the
+following format: Rows names dimension name, backslash, columns names dimension
 name. Examples below shows all cases. If dimensions are not named, then variable
 name will be used.
 
@@ -327,5 +327,5 @@ In clipboard:
 ![Repository size](https://reposs.herokuapp.com/?path=sfr/RStudio-Addin-Snippets)
 [![Pending Pull-Requests](http://githubbadges.herokuapp.com/sfr/RStudio-Addin-Snippets/pulls.svg)](https://github.com/sfr/RStudio-Addin-Snippets/pulls)
 ![downloads](https://img.shields.io/github/downloads/sfr/RStudio-Addin-Snippets/total.svg?maxAge=2592000)
-[![release version](https://img.shields.io/github/release/sfr/RStudio-Addin-Snippets.svg?maxAge=2592000)](https://github.com/sfr/RStudio-Addin-Snippets/releases)
+[![release version](https://img.shields.io/github/release/sfr/RStudio-Addin-Snippets.svg?maxAge=2592000&ts=8)](https://github.com/sfr/RStudio-Addin-Snippets/releases)
 [![license](https://img.shields.io/badge/license-GPLv2-green.svg)](https://github.com/sfr/RStudio-Addin-Snippets/blob/master/LICENSE)
