@@ -89,41 +89,41 @@ name will be used.
 mat.1 <- matrix(1:9, nrow=3, dimnames=list(rows=letters[1:3], columns=letters[24:26]))
 ```
 
-| rows\\columns | x | y | z | 
-|---------------|---|---|---| 
-| a             | 1 | 4 | 7 | 
-| b             | 2 | 5 | 8 | 
-| c             | 3 | 6 | 9 | 
+| rows\\columns | x | y | z |
+|---------------|---|---|---|
+| a             | 1 | 4 | 7 |
+| b             | 2 | 5 | 8 |
+| c             | 3 | 6 | 9 |
 
 ```{r}
 mat.2 <- matrix(1:9, nrow=3, dimnames=list(letters[1:3], columns=letters[24:26]))
 ```
 
-| \\columns | x | y | z | 
-|-----------|---|---|---| 
-| a         | 1 | 4 | 7 | 
-| b         | 2 | 5 | 8 | 
-| c         | 3 | 6 | 9 | 
+| \\columns | x | y | z |
+|-----------|---|---|---|
+| a         | 1 | 4 | 7 |
+| b         | 2 | 5 | 8 |
+| c         | 3 | 6 | 9 |
 
 ```{r}
 mat.3 <- matrix(1:9, nrow=3, dimnames=list(rows=letters[1:3], letters[24:26]))
 ```
 
-| rows\\ | x | y | z | 
-|--------|---|---|---| 
-| a      | 1 | 4 | 7 | 
-| b      | 2 | 5 | 8 | 
-| c      | 3 | 6 | 9 | 
+| rows\\ | x | y | z |
+|--------|---|---|---|
+| a      | 1 | 4 | 7 |
+| b      | 2 | 5 | 8 |
+| c      | 3 | 6 | 9 |
 
 ```{r}
 mat.4 <- matrix(1:9, nrow=3, dimnames=list(letters[1:3], letters[24:26]))
 ```
 
-| mat.4 | x | y | z | 
-|-------|---|---|---| 
-| a     | 1 | 4 | 7 | 
-| b     | 2 | 5 | 8 | 
-| c     | 3 | 6 | 9 | 
+| mat.4 | x | y | z |
+|-------|---|---|---|
+| a     | 1 | 4 | 7 |
+| b     | 2 | 5 | 8 |
+| c     | 3 | 6 | 9 |
 
 ### Data frames
 
@@ -159,7 +159,7 @@ Print out:
 ```
 , , z = x
 
-   
+
 x   k l m  n
   a 1 4 7 10
   b 2 5 8 11
@@ -167,7 +167,7 @@ x   k l m  n
 
 , , z = y
 
-   
+
 x    k  l  m  n
   a 13 16 19 22
   b 14 17 20 23

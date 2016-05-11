@@ -1,9 +1,6 @@
 engines:
   markdownlint:
     enabled: true
-  checks:
-    MD009:
-      enabled: false
   fixme:
     enabled: true
 ratings:
