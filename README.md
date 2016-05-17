@@ -6,7 +6,7 @@
 [![CRAN version](http://www.r-pkg.org/badges/version/snippetsaddin)](https://cran.r-project.org/package=snippetsaddin)
 
 RStudio add-in to add some code snippets, or help with code editing.
-It is aimed to be used on Windows.
+It is aimed to be used on Windows. It requires RStudio (>= 0.99.1111) and rstudioapi (>= 0.5-1).
 
 Currently it contains following functions:
 
