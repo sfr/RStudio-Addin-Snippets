@@ -17,7 +17,7 @@ flip.slash <- function()
 }
 
 #' @title Find Replacement
-#' @description Method decides what should be the teh selection replaced with.
+#' @description Method decides what the selection should be replaced with.
 #'
 #' @param text Selected text
 #'
