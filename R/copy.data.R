@@ -30,15 +30,21 @@ copy.data <- function()
 
     # show what was finally selected
     rstudioapi::setSelectionRanges(selection$range, context$id)
+    
+    # modify decimal separator output
     old_opts <- getOption("OutDec")
     options(OutDec = getOption("op.snippetsaddin.dec_sep"))
     type <- detect.type(selection$text)
-    options(OutDec = old_opts)
 
     if (type[['supported']])
-        copy.to.clipboard(get.tsv(type))
+        res <- copy.to.clipboard(get.tsv(type))
     else
-        message(get.error.message(type))
+        res <- message(get.error.message(type))
+    
+    # make decimal output to default
+    options(OutDec = old_opts)
+  
+   return(res)
 }
 
 #' @title Print error message
