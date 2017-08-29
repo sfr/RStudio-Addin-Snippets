@@ -1,3 +1,13 @@
+.onLoad <- function(libname, pkgname) {
+  op.snippetsaddin = list(
+    op.snippetsaddin.dec_sep = ","
+  )
+  toset <- !(names(op.snippetsaddin) %in% names(op))
+  if(any(toset)) options(op.snippetsaddin[toset])
+  invisible()
+}
+
+
 #' @title Copy data the clipboard
 #'
 #' @description Method will copy a value of the selected variable into
@@ -19,7 +29,10 @@ copy.data <- function()
 
     # show what was finally selected
     rstudioapi::setSelectionRanges(selection$range, context$id)
+    old_opts = getOption("OutDec")
+    options(OutDec = getOption("op.snippetsaddin.dec_sep"))
     type <- detect.type(selection$text)
+    options(OutDec = old_opts)
 
     if (type[['supported']])
         copy.to.clipboard(get.tsv(type))
