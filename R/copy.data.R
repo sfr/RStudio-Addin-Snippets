@@ -1,5 +1,6 @@
 .onLoad <- function(libname, pkgname) {
-  op.snippetsaddin = list(
+  op <- options()
+  op.snippetsaddin <- list(
     op.snippetsaddin.dec_sep = ","
   )
   toset <- !(names(op.snippetsaddin) %in% names(op))
@@ -29,7 +30,7 @@ copy.data <- function()
 
     # show what was finally selected
     rstudioapi::setSelectionRanges(selection$range, context$id)
-    old_opts = getOption("OutDec")
+    old_opts <- getOption("OutDec")
     options(OutDec = getOption("op.snippetsaddin.dec_sep"))
     type <- detect.type(selection$text)
     options(OutDec = old_opts)
